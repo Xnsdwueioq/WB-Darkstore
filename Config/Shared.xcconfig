@@ -1,0 +1,5 @@
+// Shared build settings.
+
+CODE_SIGN_STYLE = Automatic
+
+BUNDLE_ID_PREFIX = ru.wbtech

@@ -2,7 +2,7 @@
 //  WBDarkstoreApp.swift
 //  WBDarkstore
 //
-//  Created by sye7qjm3ac on 04.09.2026.
+//  Created by Valeriy Solovey on 04.09.2026.
 //
 
 import SwiftUI
