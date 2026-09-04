@@ -32,6 +32,9 @@
 		B71075C2304A6F6B00EDEC9A /* WBDarkstoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WBDarkstoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B71075CC304A6F6B00EDEC9A /* WBDarkstoreUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WBDarkstoreUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B71075E7304A70C100EDEC9A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		B7148796304AC90C00B9698A /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DesignSystem; path = Packages/DesignSystem; sourceTree = "<group>"; };
+		B7148797304AC94A00B9698A /* NetworkPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = NetworkPackage; path = Packages/NetworkPackage; sourceTree = "<group>"; };
+		B7148798304AC97F00B9698A /* BusinessLogic */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = BusinessLogic; path = Packages/BusinessLogic; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -74,6 +77,9 @@
 		B71075AC304A6F6900EDEC9A = {
 			isa = PBXGroup;
 			children = (
+				B7148798304AC97F00B9698A /* BusinessLogic */,
+				B7148797304AC94A00B9698A /* NetworkPackage */,
+				B7148796304AC90C00B9698A /* DesignSystem */,
 				B71075E7304A70C100EDEC9A /* .gitignore */,
 				B71075B7304A6F6900EDEC9A /* WBDarkstore */,
 				B71075C5304A6F6B00EDEC9A /* WBDarkstoreTests */,
