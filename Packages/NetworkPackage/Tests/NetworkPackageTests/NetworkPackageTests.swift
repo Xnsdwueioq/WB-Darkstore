@@ -1,8 +1,20 @@
+import Foundation
 import Testing
 @testable import NetworkPackage
 
-@Test func example() async throws {
-    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-    // Swift Testing Documentation
-    // https://developer.apple.com/documentation/testing
+@Suite
+struct NetworkPackageTests {
+    @Test
+    func testServerConnection() async throws {
+        let token = try #require(
+            ProcessInfo.processInfo.environment["BEARER_TOKEN"]
+        )
+
+        let apiClient = try APIClient(token: token)
+        let catalogAPI = CatalogAPI(apiClient: apiClient)
+
+        let categories = try await catalogAPI.fetchCategories()
+
+        #expect(!categories.isEmpty)
+    }
 }
