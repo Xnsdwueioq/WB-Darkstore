@@ -35,7 +35,13 @@ let package = Package(
         ),
         .testTarget(
             name: "BusinessLogicTests",
-            dependencies: ["BusinessLogic"],
+            dependencies: [
+                "BusinessLogic",
+                .product(
+                    name: "NetworkPackage",
+                    package: "NetworkPackage"
+                ),
+            ],
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
             ],
