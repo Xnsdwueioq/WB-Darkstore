@@ -1,3 +1,10 @@
+//
+//  CartAPITests.swift
+//  NetworkPackage
+//
+//  Created by Valeriy Solovey on 05.09.2026.
+//
+
 import Foundation
 import HTTPTypes
 import OpenAPIRuntime

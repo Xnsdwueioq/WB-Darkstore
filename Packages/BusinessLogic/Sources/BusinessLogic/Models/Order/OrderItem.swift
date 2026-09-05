@@ -1,7 +1,16 @@
-public struct OrderItemDTO: Sendable, Equatable, Identifiable {
+//
+//  OrderItem.swift
+//  BusinessLogic
+//
+//  Created by Valeriy Solovey on 05.09.2026.
+//
+
+import Foundation
+
+public struct OrderItem: Sendable, Equatable, Identifiable {
     public let id: String
     public let name: String
-    public let image: String
+    public let imageURL: URL?
     public let weight: Int
     public let price: Int
     public let quantity: Int
@@ -9,14 +18,14 @@ public struct OrderItemDTO: Sendable, Equatable, Identifiable {
     public init(
         id: String,
         name: String,
-        image: String,
+        imageURL: URL?,
         weight: Int,
         price: Int,
         quantity: Int
     ) {
         self.id = id
         self.name = name
-        self.image = image
+        self.imageURL = imageURL
         self.weight = weight
         self.price = price
         self.quantity = quantity

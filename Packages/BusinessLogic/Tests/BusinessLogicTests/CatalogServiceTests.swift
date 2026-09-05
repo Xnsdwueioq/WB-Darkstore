@@ -1,3 +1,10 @@
+//
+//  CatalogServiceTests.swift
+//  BusinessLogic
+//
+//  Created by Valeriy Solovey on 05.09.2026.
+//
+
 import Foundation
 import NetworkPackage
 import Testing

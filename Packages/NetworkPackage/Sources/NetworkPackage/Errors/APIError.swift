@@ -6,6 +6,7 @@
 //
 
 public enum APIError: Error, Sendable {
+    case invalidResponse(message: String)
     case badRequest(message: String)
     case unauthorized(message: String)
     case notFound(message: String)

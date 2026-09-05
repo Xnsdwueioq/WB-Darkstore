@@ -1,3 +1,10 @@
+//
+//  OrderService.swift
+//  BusinessLogic
+//
+//  Created by Valeriy Solovey on 05.09.2026.
+//
+
 import Foundation
 import NetworkPackage
 
@@ -15,7 +22,7 @@ public struct OrderService: OrderServiceProtocol {
     public func getOrders() async throws -> [Order] {
         let dtos = try await orderAPI.fetchOrders()
 
-        return dtos.map { dto in
+        return try dtos.map { dto in
             let status: OrderStatus = switch dto.status {
             case .active: .active
             case .completed: .completed
@@ -25,14 +32,7 @@ public struct OrderService: OrderServiceProtocol {
                 id: dto.id,
                 status: status,
                 deliveryDate: dto.deliveryDate,
-                address: Address(
-                    coordinates: dto.address.coordinates,
-                    addressLine: dto.address.addressLine,
-                    floor: dto.address.floor,
-                    entrance: dto.address.entrance,
-                    intercomCode: dto.address.intercomCode,
-                    comment: dto.address.comment
-                ),
+                address: try Address(dto: dto.address),
                 orderPrice: dto.orderPrice,
                 deliveryPrice: dto.deliveryPrice,
                 totalPrice: dto.totalPrice,

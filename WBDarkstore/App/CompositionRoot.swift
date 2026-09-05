@@ -13,6 +13,7 @@ struct CompositionRoot {
     let productService: ProductService
     let cartService: CartService
     let orderService: OrderService
+    let addressService: AddressService
 
     init(token: String) throws {
         let apiClient = try APIClient(token: token)
@@ -20,10 +21,12 @@ struct CompositionRoot {
         let productAPI = ProductAPI(apiClient: apiClient)
         let cartAPI = CartAPI(apiClient: apiClient)
         let orderAPI = OrderAPI(apiClient: apiClient)
+        let addressAPI = AddressAPI(apiClient: apiClient)
 
         catalogService = CatalogService(api: catalogAPI)
         productService = ProductService(productAPI: productAPI)
         cartService = CartService(cartAPI: cartAPI)
         orderService = OrderService(orderAPI: orderAPI)
+        addressService = AddressService(addressAPI: addressAPI)
     }
 }

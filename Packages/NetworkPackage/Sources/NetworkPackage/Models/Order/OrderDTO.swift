@@ -1,3 +1,10 @@
+//
+//  OrderDTO.swift
+//  NetworkPackage
+//
+//  Created by Valeriy Solovey on 05.09.2026.
+//
+
 public struct OrderDTO: Sendable, Equatable, Identifiable {
     public let id: String
     public let status: OrderStatusDTO

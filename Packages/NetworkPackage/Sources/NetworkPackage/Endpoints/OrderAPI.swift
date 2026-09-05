@@ -1,3 +1,10 @@
+//
+//  OrderAPI.swift
+//  NetworkPackage
+//
+//  Created by Valeriy Solovey on 05.09.2026.
+//
+
 public struct OrderAPI: OrderAPIProtocol {
     private let apiClient: APIClient
 

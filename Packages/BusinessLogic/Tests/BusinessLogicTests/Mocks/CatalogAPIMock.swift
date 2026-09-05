@@ -1,3 +1,10 @@
+//
+//  CatalogAPIMock.swift
+//  BusinessLogic
+//
+//  Created by Valeriy Solovey on 05.09.2026.
+//
+
 import NetworkPackage
 
 struct CatalogAPIMock: CatalogAPIProtocol {

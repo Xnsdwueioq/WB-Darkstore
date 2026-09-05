@@ -1,4 +1,11 @@
-public struct Address: Sendable, Equatable {
+//
+//  AddressDTO.swift
+//  NetworkPackage
+//
+//  Created by Valeriy Solovey on 05.09.2026.
+//
+
+public struct AddressDTO: Sendable, Equatable {
     public let coordinates: [Double]
     public let addressLine: String
     public let floor: String?

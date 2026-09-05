@@ -1,3 +1,10 @@
+//
+//  OrderServiceTests.swift
+//  BusinessLogic
+//
+//  Created by Valeriy Solovey on 05.09.2026.
+//
+
 import Foundation
 import NetworkPackage
 import Testing
@@ -33,7 +40,7 @@ struct OrderServiceTests {
         #expect(orders.map(\.deliveryDate) == ["5 сентября, 18:30", nil])
         for (index, order) in orders.enumerated() {
             #expect(order.address == Address(
-                coordinates: [92.87, 56.01], addressLine: "Мира, 10",
+                coordinates: .init(longitude: 92.87, latitude: 56.01), addressLine: "Мира, 10",
                 floor: "5", entrance: "2", intercomCode: "42", comment: "Позвонить"
             ))
             #expect(order.orderPrice == 498)
@@ -63,7 +70,7 @@ struct OrderServiceTests {
         let order = try #require(try await service.getOrders().first)
 
         #expect(order.address == Address(
-            coordinates: [92.87, 56.01], addressLine: "Мира, 10",
+            coordinates: .init(longitude: 92.87, latitude: 56.01), addressLine: "Мира, 10",
             floor: nil, entrance: nil, intercomCode: nil, comment: nil
         ))
         #expect(order.items.isEmpty)
@@ -75,6 +82,23 @@ struct OrderServiceTests {
         let service = OrderService(orderAPI: OrderAPIMock())
 
         #expect(try await service.getOrders().isEmpty)
+    }
+
+    @Test("Rejects invalid order address coordinates", arguments: [[], [92.87], [92.87, 56.01, 1.0]])
+    func rejectsInvalidCoordinates(coordinates: [Double]) async {
+        let dto = OrderDTO(
+            id: "order-1", status: .active, deliveryDate: nil,
+            address: AddressDTO(
+                coordinates: coordinates, addressLine: "Мира, 10",
+                floor: nil, entrance: nil, intercomCode: nil, comment: nil
+            ),
+            orderPrice: 0, deliveryPrice: 0, totalPrice: 0, totalItems: 0, items: []
+        )
+        let service = OrderService(orderAPI: OrderAPIMock(fetchResponse: .success([dto])))
+
+        await #expect(throws: AddressMappingError.invalidCoordinates) {
+            try await service.getOrders()
+        }
     }
 
     @Test("Passes the payment method and address ID to order creation")

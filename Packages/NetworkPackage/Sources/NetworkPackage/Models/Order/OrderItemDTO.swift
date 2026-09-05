@@ -1,9 +1,14 @@
-import Foundation
+//
+//  OrderItemDTO.swift
+//  NetworkPackage
+//
+//  Created by Valeriy Solovey on 05.09.2026.
+//
 
-public struct OrderItem: Sendable, Equatable, Identifiable {
+public struct OrderItemDTO: Sendable, Equatable, Identifiable {
     public let id: String
     public let name: String
-    public let imageURL: URL?
+    public let image: String
     public let weight: Int
     public let price: Int
     public let quantity: Int
@@ -11,14 +16,14 @@ public struct OrderItem: Sendable, Equatable, Identifiable {
     public init(
         id: String,
         name: String,
-        imageURL: URL?,
+        image: String,
         weight: Int,
         price: Int,
         quantity: Int
     ) {
         self.id = id
         self.name = name
-        self.imageURL = imageURL
+        self.image = image
         self.weight = weight
         self.price = price
         self.quantity = quantity

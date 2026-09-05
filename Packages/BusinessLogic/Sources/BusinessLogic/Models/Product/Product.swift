@@ -4,6 +4,11 @@
 //
 //  Created by Valeriy Solovey on 04.09.2026.
 //
+//  Product.swift
+//  BusinessLogic
+//
+//  Created by Valeriy Solovey on 05.09.2026.
+//
 
 import Foundation
 

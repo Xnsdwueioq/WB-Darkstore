@@ -1,6 +1,8 @@
 //
-// FlexibleISO8601DateTranscoder.swift
-// WBTech
+//  FlexibleISO8601DateTranscoder.swift
+//  NetworkPackage
+//
+//  Created by Valeriy Solovey on 05.09.2026.
 //
 
 import Foundation
