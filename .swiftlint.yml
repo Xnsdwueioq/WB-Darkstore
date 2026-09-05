@@ -1,0 +1,15 @@
+disabled_rules:
+  - todo
+
+excluded:
+  - .build
+  - DerivedData
+  - Packages/BusinessLogic/.build
+  - Packages/BusinessLogic/.swiftpm
+  - Packages/DesignSystem/.build
+  - Packages/DesignSystem/.swiftpm
+  - Packages/NetworkPackage/.build
+  - Packages/NetworkPackage/.swiftpm
+  - Docs
+
+lenient: false
