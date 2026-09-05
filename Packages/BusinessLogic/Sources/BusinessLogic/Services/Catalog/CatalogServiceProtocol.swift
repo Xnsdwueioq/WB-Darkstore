@@ -7,4 +7,9 @@
 
 public protocol CatalogServiceProtocol {
     func getCategories() async throws -> [Category]
+    func getProducts(
+        categoryID: String?,
+        page: Int?,
+        pageSize: Int?
+    ) async throws -> ProductList
 }

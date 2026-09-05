@@ -7,4 +7,9 @@
 
 public protocol CatalogAPIProtocol: Sendable {
     func fetchCategories() async throws -> [CategoryDTO]
+    func fetchProducts(
+        categoryID: String?,
+        page: Int?,
+        pageSize: Int?
+    ) async throws -> ProductListDTO
 }
