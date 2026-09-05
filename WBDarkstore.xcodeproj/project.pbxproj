@@ -36,6 +36,7 @@
 		B7148796304AC90C00B9698A /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DesignSystem; path = Packages/DesignSystem; sourceTree = "<group>"; };
 		B7148797304AC94A00B9698A /* NetworkPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = NetworkPackage; path = Packages/NetworkPackage; sourceTree = "<group>"; };
 		B7148798304AC97F00B9698A /* BusinessLogic */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = BusinessLogic; path = Packages/BusinessLogic; sourceTree = "<group>"; };
+		B7148945304C76EF00B9698A /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B7C0A001304B000100000001 /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -86,6 +87,7 @@
 		B71075AC304A6F6900EDEC9A = {
 			isa = PBXGroup;
 			children = (
+				B7148945304C76EF00B9698A /* .swiftlint.yml */,
 				B7148798304AC97F00B9698A /* BusinessLogic */,
 				B7148797304AC94A00B9698A /* NetworkPackage */,
 				B7148796304AC90C00B9698A /* DesignSystem */,
@@ -137,6 +139,9 @@
 				B71075B3304A6F6900EDEC9A /* Resources */,
 			);
 			buildRules = (
+			);
+			dependencies = (
+				B7148947304C779300B9698A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				B71075B7304A6F6900EDEC9A /* WBDarkstore */,
@@ -224,6 +229,9 @@
 			);
 			mainGroup = B71075AC304A6F6900EDEC9A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B7148944304C769E00B9698A /* XCRemoteSwiftPackageReference "SwiftLint" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B71075B6304A6F6900EDEC9A /* Products */;
 			projectDirPath = "";
@@ -282,6 +290,10 @@
 			isa = PBXTargetDependency;
 			target = B71075B4304A6F6900EDEC9A /* WBDarkstore */;
 			targetProxy = B71075CD304A6F6B00EDEC9A /* PBXContainerItemProxy */;
+		};
+		B7148947304C779300B9698A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = B7148946304C779300B9698A /* SwiftLintBuildToolPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -600,6 +612,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		B7148944304C769E00B9698A /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.65.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		B714879A304ACC2500B9698A /* DesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -608,6 +631,11 @@
 		B714879C304ACC2900B9698A /* BusinessLogic */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BusinessLogic;
+		};
+		B7148946304C779300B9698A /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B7148944304C769E00B9698A /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
