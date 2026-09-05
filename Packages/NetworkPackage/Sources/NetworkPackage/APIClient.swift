@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OpenAPIRuntime
 import OpenAPIURLSession
 
 // В CompositionRoot:
@@ -14,13 +15,17 @@ import OpenAPIURLSession
 public struct APIClient: Sendable {
     let client: Client
 
-    public init(serverURL: URL, token: String) {
+    public init(
+        serverURL: URL,
+        token: String,
+        transport: any ClientTransport = URLSessionTransport()
+    ) {
         client = Client(
             serverURL: serverURL,
             configuration: .init(
                 dateTranscoder: FlexibleISO8601DateTranscoder()
             ),
-            transport: URLSessionTransport(),
+            transport: transport,
             middlewares: [
                 BearerTokenMiddleware(token: token)
             ]

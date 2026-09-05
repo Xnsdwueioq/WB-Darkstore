@@ -8,9 +8,9 @@
 import Foundation
 
 public struct Category {
-    public var id: String
-    public var name: String
-    public var imageURL: URL?
+    public let id: String
+    public let name: String
+    public let imageURL: URL?
 
     public init(
         id: String,
