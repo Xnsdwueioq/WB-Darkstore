@@ -14,7 +14,7 @@ public struct CatalogAPI: CatalogAPIProtocol {
 
     public func fetchCategories() async throws -> [CategoryDTO] {
         let output = try await apiClient.client.getCategories(.init())
-        
+
         switch output {
         case .ok(let response):
             let categories = try response.body.json

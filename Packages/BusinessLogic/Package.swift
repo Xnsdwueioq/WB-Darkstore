@@ -14,6 +14,10 @@ let package = Package(
     ],
     dependencies: [
         .package(
+            url: "https://github.com/realm/SwiftLint",
+            from: "0.65.1"
+        ),
+        .package(
             name: "NetworkPackage",
             path: "../NetworkPackage"
         ),
@@ -32,6 +36,12 @@ let package = Package(
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
             ],
+            plugins: [
+                .plugin(
+                    name: "SwiftLintBuildToolPlugin",
+                    package: "SwiftLint"
+                ),
+            ],
         ),
         .testTarget(
             name: "BusinessLogicTests",
@@ -44,6 +54,12 @@ let package = Package(
             ],
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
+            ],
+            plugins: [
+                .plugin(
+                    name: "SwiftLintBuildToolPlugin",
+                    package: "SwiftLint"
+                ),
             ],
         ),
     ]

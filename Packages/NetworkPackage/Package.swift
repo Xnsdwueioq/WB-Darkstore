@@ -14,6 +14,10 @@ let package = Package(
     ],
     dependencies: [
         .package(
+            url: "https://github.com/realm/SwiftLint",
+            from: "0.65.1"
+        ),
+        .package(
             url: "https://github.com/apple/swift-openapi-generator",
             from: "1.13.1"
         ),
@@ -49,6 +53,10 @@ let package = Package(
                     name: "OpenAPIGenerator",
                     package: "swift-openapi-generator"
                 ),
+                .plugin(
+                    name: "SwiftLintBuildToolPlugin",
+                    package: "SwiftLint"
+                ),
             ]
         ),
         .testTarget(
@@ -56,6 +64,12 @@ let package = Package(
             dependencies: ["NetworkPackage"],
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
+            ],
+            plugins: [
+                .plugin(
+                    name: "SwiftLintBuildToolPlugin",
+                    package: "SwiftLint"
+                ),
             ],
         ),
     ]
