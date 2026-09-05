@@ -8,5 +8,6 @@
 public enum APIError: Error, Sendable {
     case badRequest(message: String)
     case unauthorized(message: String)
+    case notFound(message: String)
     case server(statusCode: Int, message: String)
 }

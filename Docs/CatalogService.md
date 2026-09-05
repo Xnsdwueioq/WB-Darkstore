@@ -1,20 +1,21 @@
-# CatalogService и CatalogAPI
-Каталог состоит из двух публичных слоёв:
-```text
-UI / CatalogModel
-        ↓
-CatalogServiceProtocol / CatalogService        BusinessLogic
-        ↓
-CatalogAPIProtocol / CatalogAPI                NetworkPackage
-        ↓
-APIClient → сгенерированный OpenAPI Client → backend
-```
-- `CatalogAPI` выполняет HTTP-запросы, разбирает ответы OpenAPI-клиента и возвращает DTO.
-- `CatalogService` преобразует DTO в доменные модели, с которыми работают модель экрана и UI.
-- UI не должен импортировать `NetworkPackage` и работать с DTO напрямую.
+# Catalog и Product: API и сервисы
 
-Отдельные `CategoriesAPI` и `ProductListAPI` сейчас не создаются: оба endpoint относятся к каталогу и собраны в одном `CatalogAPI`.
-## CatalogServiceProtocol
+```text
+UI / Model
+    ↓
+CatalogService или ProductService       BusinessLogic
+    ↓
+CatalogAPI или ProductAPI               NetworkPackage
+    ↓
+APIClient → OpenAPI Client → backend
+```
+
+UI работает только с сервисами и domain-моделями. DTO и API остаются внутри сетевого и бизнес-слоёв.
+
+## CatalogService
+
+Категории и список товаров:
+
 ```swift
 public protocol CatalogServiceProtocol {
     func getCategories() async throws -> [Category]
@@ -27,70 +28,96 @@ public protocol CatalogServiceProtocol {
 }
 ```
 
-Модель `Product` содержит:
-| Поле | Тип |
+| Метод | Результат |
 | --- | --- |
-| `id` | `String` |
-| `name` | `String` |
-| `imageURL` | `URL?` |
-| `weight` | `Double` |
-| `price` | `Int` |
-| `rating` | `Float` |
-| `reviewCount` | `Int` |
-| `isFavorite` | `Bool` |
-| `discount` | `Double?` |
-`Product` описывает элемент списка. Полная карточка товара из `GET /products/{id}` пока не реализована.
-## CatalogAPIProtocol
-`CatalogAPIProtocol` предоставляет два метода:
-```swift
-func fetchCategories() async throws -> [CategoryDTO]
+| `getCategories()` | Все категории |
+| `getProducts(...)` | Страница товаров, при необходимости отфильтрованная по категории |
 
-func fetchProducts(
-    categoryID: String?,
-    page: Int?,
-    pageSize: Int?
-) async throws -> ProductListDTO
-```
-`CatalogAPI` вызывает методы сгенерированного клиента:
-- `getCategories` для `GET /categories`;
-- `getProducts` для `GET /products`.
-Сгенерированные OpenAPI-типы остаются внутренней деталью `NetworkPackage`. Наружу возвращаются стабильные DTO проекта: `CategoryDTO`, `ProductPreviewDTO` и `ProductListDTO`.
+`ProductList` содержит `currentPage`, `totalPages` и `[Product]`. `Product` — краткая модель для карточки в каталоге.
 
-## APIError
-Методы пробрасывают transport/decoding errors без изменения. Ответы backend преобразуются в `APIError`:
+## CatalogAPI
+
 ```swift
-public enum APIError: Error, Sendable {
-    case badRequest(message: String)
-    case unauthorized(message: String)
-    case server(statusCode: Int, message: String)
+public protocol CatalogAPIProtocol: Sendable {
+    func fetchCategories() async throws -> [CategoryDTO]
+
+    func fetchProducts(
+        categoryID: String?,
+        page: Int?,
+        pageSize: Int?
+    ) async throws -> ProductListDTO
 }
 ```
-- `400` → `.badRequest`;
-- `401` → `.unauthorized`;
-- остальные документированные ошибки → `.server` с HTTP-кодом.
-Интерпретация ошибки для пользователя должна выполняться выше — например, в `CatalogModel`. `CatalogService` не скрывает и не заменяет ошибки API.
 
-## DI
-Рабочая цепочка создаётся в `CompositionRoot`:
+| Метод | Endpoint |
+| --- | --- |
+| `fetchCategories()` | `GET /categories` |
+| `fetchProducts(...)` | `GET /products` |
+
+## ProductService
+
+Детальная карточка, избранное и отправка отзыва:
+
+```swift
+public protocol ProductServiceProtocol: Sendable {
+    func getProduct(id: String) async throws -> ProductDetails
+    func setFavorite(_ isFavorite: Bool, productID: String) async throws
+    func submitReview(productID: String, review: NewReview) async throws
+}
+```
+
+| Метод | Назначение |
+| --- | --- |
+| `getProduct(id:)` | Возвращает полную карточку вместе с `[Review]` |
+| `setFavorite(true, productID:)` | Добавляет товар в избранное |
+| `setFavorite(false, productID:)` | Удаляет товар из избранного |
+| `submitReview(productID:review:)` | Отправляет новый отзыв |
+
+После успешной отправки отзыва endpoint не возвращает созданный объект. Для обновления автора, даты, рейтинга и списка отзывов нужно повторно вызвать `getProduct(id:)`.
+
+## ProductAPI
+
+```swift
+public protocol ProductAPIProtocol: Sendable {
+    func fetchProduct(id: String) async throws -> ProductDetailsDTO
+    func addToFavorites(productID: String) async throws
+    func removeFromFavorites(productID: String) async throws
+    func submitReview(productID: String, review: NewReviewDTO) async throws
+}
+```
+
+| Метод | Endpoint |
+| --- | --- |
+| `fetchProduct(id:)` | `GET /products/{id}` |
+| `addToFavorites(productID:)` | `POST /products/{id}/favourite` |
+| `removeFromFavorites(productID:)` | `DELETE /products/{id}/favourite` |
+| `submitReview(productID:review:)` | `POST /products/{id}/reviews` |
+
+`ProductService.setFavorite` сам выбирает `addToFavorites` или `removeFromFavorites`. UI не должен вызывать `ProductAPI` напрямую.
+
+## Domain-модели
+
+| Модель | Использование |
+| --- | --- |
+| `Category` | Категория каталога |
+| `Product` | Краткая карточка товара в списке |
+| `ProductList` | Страница товаров и данные пагинации |
+| `ProductDetails` | Полная карточка, описание и отзывы |
+| `Review` | Полученный отзыв |
+| `NewReview` | Данные для отправки нового отзыва |
+
+## Dependency Injection
+
+В `CompositionRoot` уже создаются оба сервиса:
+
 ```swift
 let apiClient = try APIClient(token: token)
+
 let catalogAPI = CatalogAPI(apiClient: apiClient)
-let catalogService = CatalogService(api: catalogAPI)
-```
-`APIClient` добавляет bearer token через `BearerTokenMiddleware`. Для запуска приложения и интеграционного теста требуется переменная окружения `BEARER_TOKEN`.
+catalogService = CatalogService(api: catalogAPI)
 
-## Что использовать следующему слою
-`CatalogModel` должен зависеть от `CatalogServiceProtocol`, а не от конкретного `CatalogService` или `CatalogAPIProtocol`.
-Минимальный сценарий загрузки товаров категории:
-```swift
-let result = try await catalogService.getProducts(
-    categoryID: category.id,
-    page: 1,
-    pageSize: 20
-)
-
-products = result.products
-currentPage = result.currentPage
-totalPages = result.totalPages
+let productAPI = ProductAPI(apiClient: apiClient)
+productService = ProductService(productAPI: productAPI)
 ```
-Для следующей страницы нужно увеличить `page`, повторить запрос и добавить `result.products` к уже загруженному массиву.
+
+Следующий слой должен зависеть от `CatalogServiceProtocol` и `ProductServiceProtocol`, а не от API или DTO.
