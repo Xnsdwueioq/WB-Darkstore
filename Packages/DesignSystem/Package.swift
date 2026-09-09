@@ -5,11 +5,21 @@ import PackageDescription
 
 let package = Package(
     name: "DesignSystem",
+    platforms: [
+        .iOS(.v18),
+        .macOS(.v13),
+    ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "DesignSystem",
             targets: ["DesignSystem"]
+        ),
+    ],
+    dependencies: [
+        .package(
+            url: "https://github.com/realm/SwiftLint",
+            from: "0.65.1"
         ),
     ],
     targets: [
@@ -19,6 +29,12 @@ let package = Package(
             name: "DesignSystem",
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
+            ],
+            plugins: [
+                .plugin(
+                    name: "SwiftLintBuildToolPlugin",
+                    package: "SwiftLint"
+                ),
             ],
         ),
 

@@ -1,0 +1,1594 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Приложение для доставки еды",
+    "description": "Backend для ios приложения",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://eat-and-pay.t02.ru"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "UserProfile": {
+        "type": "object",
+        "required": [
+          "name",
+          "phone",
+          "birthday"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "birthday": {
+            "type": "string",
+            "example": "01.01.1999"
+          },
+          "imageUrl": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "image",
+          "price",
+          "weight",
+          "rating",
+          "description",
+          "isFavorite"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string",
+            "format": "uri"
+          },
+          "name": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          },
+          "price": {
+            "type": "integer"
+          },
+          "rating": {
+            "type": "number",
+            "format": "float"
+          },
+          "description": {
+            "type": "string"
+          },
+          "isFavorite": {
+            "type": "boolean"
+          },
+          "discount": {
+            "type": "number",
+            "description": "Размер скидки"
+          },
+          "reviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Review"
+            }
+          }
+        }
+      },
+      "ProductPreview": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "image",
+          "weight",
+          "price",
+          "rating",
+          "reviewCount",
+          "isFavorite"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string",
+            "format": "uri"
+          },
+          "name": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          },
+          "price": {
+            "type": "integer"
+          },
+          "rating": {
+            "type": "number",
+            "format": "float"
+          },
+          "reviewCount": {
+            "type": "integer"
+          },
+          "isFavorite": {
+            "type": "boolean"
+          },
+          "discount": {
+            "type": "number",
+            "description": "Размер скидки"
+          }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "required": [
+          "rating",
+          "author",
+          "createdAt",
+          "content",
+          "images"
+        ],
+        "properties": {
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "author": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "content": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "image"
+        ]
+      },
+      "OrderItem": {
+        "type": "object",
+        "required": [
+          "id",
+          "image",
+          "name",
+          "weight",
+          "price",
+          "quantity"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "integer"
+          },
+          "price": {
+            "type": "integer"
+          },
+          "quantity": {
+            "type": "integer"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "address",
+          "orderPrice",
+          "deliveryPrice",
+          "totalPrice",
+          "totalItems",
+          "items"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "completed"
+            ]
+          },
+          "deliveryDate": {
+            "description": "Есть только если заказ завершен",
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "orderPrice": {
+            "type": "integer",
+            "description": "Стоимость товаров в заказе"
+          },
+          "deliveryPrice": {
+            "type": "integer",
+            "description": "Стоимость доставки"
+          },
+          "totalPrice": {
+            "type": "integer",
+            "description": "Общая стоимость"
+          },
+          "totalItems": {
+            "type": "integer"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItem"
+            }
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "required": [
+          "addressLine",
+          "coordinates"
+        ],
+        "properties": {
+          "coordinates": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number"
+            },
+            "description": "Массив [долгота, широта]"
+          },
+          "addressLine": {
+            "type": "string"
+          },
+          "floor": {
+            "type": "string"
+          },
+          "entrance": {
+            "type": "string"
+          },
+          "intercomCode": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          }
+        }
+      },
+      "Account": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "balance"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "card",
+              "savings"
+            ],
+            "description": "Тип счета"
+          },
+          "balance": {
+            "type": "integer",
+            "description": "Баланс в рублях"
+          }
+        }
+      },
+      "Wallet": {
+        "type": "object",
+        "required": [
+          "accounts"
+        ],
+        "properties": {
+          "accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Account"
+            }
+          }
+        }
+      },
+      "Transaction": {
+        "type": "object",
+        "required": [
+          "amount",
+          "title",
+          "time",
+          "icon"
+        ],
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "Сумма в рублях (отрицательная для трат, положительная для доходов)"
+          },
+          "title": {
+            "type": "string",
+            "description": "Название транзакции"
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Время транзакции"
+          },
+          "icon": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL иконки транзакции"
+          }
+        }
+      },
+      "TransactionsByDate": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Transaction"
+          }
+        },
+        "description": "Объект, где ключ - дата в формате YYYY-MM-DD, значение - массив транзакций"
+      },
+      "TopupRequest": {
+        "type": "object",
+        "required": [
+          "accountId",
+          "amount"
+        ],
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "description": "ID счета для пополнения"
+          },
+          "amount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Сумма пополнения в рублях (максимум 1000 рублей в сутки)"
+          }
+        }
+      },
+      "TransferRequest": {
+        "type": "object",
+        "required": [
+          "fromAccountId",
+          "toPhoneNumber",
+          "amount"
+        ],
+        "properties": {
+          "fromAccountId": {
+            "type": "string",
+            "description": "ID счета отправителя"
+          },
+          "toPhoneNumber": {
+            "type": "string",
+            "description": "Номер телефона пользователя получателя"
+          },
+          "amount": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Сумма перевода в рублях"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Unauthorized"
+          }
+        }
+      }
+    },
+    "responses": {
+      "401": {
+        "description": "Токен доступа недействителен или не указан",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Unauthorized"
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Операция запрещена",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "GetProductByID: forbidden: product is not removable"
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Искомый объект не найден",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "GetProductByID: not found: product ab936e-9155-43d4-aaf7-6dacbdc668ce not found"
+            }
+          }
+        }
+      },
+      "BadRequestError": {
+        "description": "Ошибка валидации входных данных",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Bad request"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Внутренняя ошибка сервера",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Internal error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/users/me": {
+      "get": {
+        "tags": [
+          "О пользователе"
+        ],
+        "summary": "Получить профиль текущего пользователя",
+        "responses": {
+          "200": {
+            "description": "Профиль пользователя",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "О пользователе"
+        ],
+        "summary": "Обновить профиль",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "birthday",
+                  "imageUri"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "birthday": {
+                    "type": "string",
+                    "example": "01.01.1999"
+                  },
+                  "imageUri": {
+                    "type": "string",
+                    "description": "Обязательно в формате jxl"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно обновлено"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "О пользователе"
+        ],
+        "summary": "Удалить аккаунт",
+        "responses": {
+          "200": {
+            "description": "Аккаунт сброшен к настройкам по умолчанию"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": [
+          "О пользователе"
+        ],
+        "summary": "Выйти из системы",
+        "responses": {
+          "200": {
+            "description": "Успешный выход"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Товары"
+        ],
+        "summary": "Список товаров",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "category",
+            "description": "Будут показаны товары только этой категории",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список товаров",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "currentPage",
+                    "totalPages",
+                    "data"
+                  ],
+                  "properties": {
+                    "currentPage": {
+                      "type": "integer"
+                    },
+                    "totalPages": {
+                      "type": "integer"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ProductPreview"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "tags": [
+          "Товары"
+        ],
+        "summary": "Детальная информация о товаре",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Продукт",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/products/{id}/favourite": {
+      "post": {
+        "tags": [
+          "Товары"
+        ],
+        "summary": "Добавить товар в избранное",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Товар добавлен"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Товары"
+        ],
+        "summary": "Удалить товар из избранного",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Товар удалён"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/products/{id}/reviews": {
+      "post": {
+        "tags": [
+          "Товары"
+        ],
+        "summary": "Добавить отзыв",
+        "description": "Добавленные отзывы видны всем пользователям. Также отзыв подписывается именем студента, выполнившего запрос. То есть отзывы публичны и не анонимны, будьте внимательны.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "rating",
+                  "content",
+                  "images"
+                ],
+                "properties": {
+                  "rating": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Отзыв добавлен"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": [
+          "Товары"
+        ],
+        "summary": "Получить список категорий",
+        "responses": {
+          "200": {
+            "description": "Категории",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/cart": {
+      "get": {
+        "tags": [
+          "Корзина"
+        ],
+        "summary": "Получить содержимое корзины",
+        "responses": {
+          "200": {
+            "description": "Корзина",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "deliveryTime",
+                    "orderPrice",
+                    "deliveryPrice",
+                    "totalPrice",
+                    "items",
+                    "totalItems"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "deliveryTime": {
+                      "type": "integer",
+                      "description": "Сколько минут займет доставка"
+                    },
+                    "orderPrice": {
+                      "type": "integer",
+                      "description": "Стоимость товаров в заказе"
+                    },
+                    "deliveryPrice": {
+                      "type": "integer",
+                      "description": "Стоимость доставки"
+                    },
+                    "totalPrice": {
+                      "type": "integer",
+                      "description": "Общая стоимость"
+                    },
+                    "totalItems": {
+                      "type": "integer",
+                      "description": "Количество товаров в корзине"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/OrderItem"
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "available"
+                            ],
+                            "properties": {
+                              "available": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/cart/items": {
+      "post": {
+        "tags": [
+          "Корзина"
+        ],
+        "summary": "Добавить товар в корзину",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Количество товаров в корзине",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "total"
+                  ],
+                  "properties": {
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/cart/items/{id}": {
+      "delete": {
+        "tags": [
+          "Корзина"
+        ],
+        "summary": "Удалить товар из корзины",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Количество товаров в корзине",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "post": {
+        "tags": [
+          "Заказы"
+        ],
+        "summary": "Создать новый заказ",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "paymentMethod",
+                  "addressID"
+                ],
+                "properties": {
+                  "paymentMethod": {
+                    "type": "string"
+                  },
+                  "addressID": {
+                    "type": "string",
+                    "description": "id выбранного адерса"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Заказ создан"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Заказы"
+        ],
+        "summary": "Список заказов пользователя",
+        "responses": {
+          "200": {
+            "description": "Список заказов, отсортированных по статусу, а затем по времени заказа по убыванию",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/addresses": {
+      "get": {
+        "tags": [
+          "О пользователе"
+        ],
+        "summary": "Список адресов пользователя",
+        "responses": {
+          "200": {
+            "description": "Адреса",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "addressLine",
+                      "coordinates"
+                    ],
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Address"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "О пользователе"
+        ],
+        "summary": "Добавить новый адрес",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Address"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Адрес добавлен"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/addresses/{id}": {
+      "put": {
+        "tags": [
+          "О пользователе"
+        ],
+        "summary": "Обновить адрес",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Address"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Адрес обновлен"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "О пользователе"
+        ],
+        "summary": "Удалить адрес",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Адрес удален"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/uploads": {
+      "post": {
+        "tags": [
+          "Файлы"
+        ],
+        "summary": "Загрузить файл",
+        "description": "Загружает файл в хранилище. \nТребуется авторизация через Bearer токен. \nМаксимальный размер файла — 5 МБ.\nОбязательно в формате jxl\n",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Файл для загрузки, обязательно в формате jxl"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Файл успешно загружен",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "example": "f8a3b0e1-12c3-4a5b-9d8e-1c2a3b4d5e6f.png"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/uploads/{filename}": {
+      "get": {
+        "tags": [
+          "Файлы"
+        ],
+        "summary": "Скачать или просмотреть файл",
+        "description": "Возвращает загруженный ранее файл.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "filename",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Имя файла (с расширением)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Файл найден и возвращён",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/wallet": {
+      "get": {
+        "tags": [
+          "Кошелек"
+        ],
+        "summary": "Получить информацию о кошельке",
+        "description": "Возвращает список счетов пользователя с их балансами",
+        "responses": {
+          "200": {
+            "description": "Информация о кошельке",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wallet"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/wallet/transactions": {
+      "get": {
+        "tags": [
+          "Кошелек"
+        ],
+        "summary": "Получить историю транзакций",
+        "description": "Возвращает историю транзакций, сгруппированную по датам. Сначала выдаются более новые траты. Пагинация распространяется на количество транзакций.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "История транзакций",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "currentPage",
+                    "totalPages",
+                    "data"
+                  ],
+                  "properties": {
+                    "currentPage": {
+                      "type": "integer"
+                    },
+                    "totalPages": {
+                      "type": "integer"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/TransactionsByDate"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/wallet/topup": {
+      "post": {
+        "tags": [
+          "Кошелек"
+        ],
+        "summary": "Пополнить счет",
+        "description": "Пополнение счета. Есть лимит пополнения 1000 рублей в сутки.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TopupRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Счет успешно пополнен",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "balance"
+                  ],
+                  "properties": {
+                    "balance": {
+                      "type": "integer",
+                      "description": "Новый баланс в рублях"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/wallet/transfers": {
+      "post": {
+        "tags": [
+          "Кошелек"
+        ],
+        "summary": "Перевести средства",
+        "description": "Перевод средств между счетами пользователей по телефону пользователя",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Перевод выполнен успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "balance"
+                  ],
+                  "properties": {
+                    "balance": {
+                      "type": "integer",
+                      "description": "Новый баланс отправителя в копейках"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  }
+}

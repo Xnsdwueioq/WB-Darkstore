@@ -5,6 +5,10 @@ import PackageDescription
 
 let package = Package(
     name: "BusinessLogic",
+    platforms: [
+        .iOS(.v18),
+        .macOS(.v13),
+    ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
@@ -13,6 +17,10 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(
+            url: "https://github.com/realm/SwiftLint",
+            from: "0.65.1"
+        ),
         .package(
             name: "NetworkPackage",
             path: "../NetworkPackage"
@@ -32,12 +40,30 @@ let package = Package(
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
             ],
+            plugins: [
+                .plugin(
+                    name: "SwiftLintBuildToolPlugin",
+                    package: "SwiftLint"
+                ),
+            ],
         ),
         .testTarget(
             name: "BusinessLogicTests",
-            dependencies: ["BusinessLogic"],
+            dependencies: [
+                "BusinessLogic",
+                .product(
+                    name: "NetworkPackage",
+                    package: "NetworkPackage"
+                ),
+            ],
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
+            ],
+            plugins: [
+                .plugin(
+                    name: "SwiftLintBuildToolPlugin",
+                    package: "SwiftLint"
+                ),
             ],
         ),
     ]
