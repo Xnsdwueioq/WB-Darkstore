@@ -10,13 +10,16 @@ import Foundation
 @MainActor
 public protocol CatalogModelProtocol: AnyObject, Observable {
     var state: ScreenState<[Category]> { get }
+    var productsState: ScreenState<ProductList> { get }
     func loadCategories() async
+    func loadProducts(categoryID: String?, page: Int?, pageSize: Int?) async
 }
 
 @MainActor
 @Observable
 public final class CatalogModel: CatalogModelProtocol {
     public private(set) var state: ScreenState<[Category]> = .loading
+    public private(set) var productsState: ScreenState<ProductList> = .loading
 
     private let catalogService: any CatalogServiceProtocol
 
@@ -31,6 +34,20 @@ public final class CatalogModel: CatalogModelProtocol {
             state = .content(categories)
         } catch {
             state = .error(error)
+        }
+    }
+    
+    public func loadProducts(categoryID: String?, page: Int?, pageSize: Int?) async {
+        productsState = .loading
+        do {
+            let productList = try await catalogService.getProducts(
+                categoryID: categoryID,
+                page: page,
+                pageSize: pageSize
+            )
+            productsState = .content(productList)
+        } catch {
+            productsState = .error(error)
         }
     }
 }
