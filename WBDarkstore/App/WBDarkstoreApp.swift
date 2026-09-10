@@ -12,6 +12,7 @@ import BusinessLogic
 struct WBDarkstoreApp: App {
     @State private var catalogModel: CatalogModel
     @State private var cartModel: CartModel
+    @State private var orderModel: OrderModel
     init() {
         guard let token = ProcessInfo.processInfo.environment["BEARER_TOKEN"] else {
             fatalError("BEARER_TOKEN is missing")
@@ -24,12 +25,14 @@ struct WBDarkstoreApp: App {
         }
         _catalogModel = State(initialValue: CatalogModel(catalogService: compositionRoot.catalogService))
         _cartModel = State(initialValue: CartModel(cartService: compositionRoot.cartService))
+        _orderModel = State(initialValue: OrderModel(orderService: compositionRoot.orderService))
     }
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environment(catalogModel)
                 .environment(cartModel)
+                .environment(orderModel)
         }
     }
 }
