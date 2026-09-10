@@ -23,9 +23,9 @@ struct WBDarkstoreApp: App {
         } catch {
             fatalError("Не получилось создать CompositionRoot: \(error)")
         }
-        _catalogModel = State(initialValue: CatalogModel(catalogService: compositionRoot.catalogService))
-        _cartModel = State(initialValue: CartModel(cartService: compositionRoot.cartService))
-        _orderModel = State(initialValue: OrderModel(orderService: compositionRoot.orderService))
+        catalogModel = CatalogModel(catalogService: compositionRoot.catalogService)
+        cartModel = CartModel(cartService: compositionRoot.cartService)
+        orderModel = OrderModel(orderService: compositionRoot.orderService)
     }
     var body: some Scene {
         WindowGroup {

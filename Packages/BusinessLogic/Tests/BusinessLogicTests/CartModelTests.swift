@@ -1,5 +1,5 @@
 //
-//  CartServiceMock.swift
+//  CartModelTests.swift
 //  BusinessLogic
 //
 //  Created by Илья Ермаков on 10.09.2026.
@@ -129,5 +129,38 @@ struct CartModelTests {
             return
         }
         #expect(cart == expectedCart)
+    }
+    
+    @Test("Failed add-to-cart rolls back to the previous cart when one was already loaded")
+    func addToCartFailureRollsBackToPreviousContent() async {
+        let initialCart = BusinessLogic.Cart(
+            deliveryTime: 30,
+            orderPrice: 249,
+            deliveryPrice: 0,
+            totalPrice: 249,
+            totalItems: 1,
+            items: [
+                BusinessLogic.CartItem(
+                    id: "item-1",
+                    name: "Tomatoes",
+                    imageURL: nil,
+                    weight: 500,
+                    price: 249,
+                    quantity: 1,
+                    available: true
+                )
+            ]
+        )
+        let service = CartServiceMock(cartResult: .success(initialCart), addResult: .failure(.requestFailed))
+        let model = CartModel(cartService: service)
+
+        await model.loadCart()
+        await model.addToCart(productID: "item-1")
+
+        guard case .content(let cart) = model.state else {
+            Issue.record("Expected state to roll back to previous .content, not .error")
+            return
+        }
+        #expect(cart == initialCart)
     }
 }
