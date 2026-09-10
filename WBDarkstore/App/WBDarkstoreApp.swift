@@ -11,6 +11,7 @@ import BusinessLogic
 @main
 struct WBDarkstoreApp: App {
     @State private var catalogModel: CatalogModel
+    
     init() {
         guard let token = ProcessInfo.processInfo.environment["BEARER_TOKEN"] else {
             fatalError("BEARER_TOKEN is missing")
@@ -22,7 +23,10 @@ struct WBDarkstoreApp: App {
             fatalError("Не получилось создать CompositionRoot: \(error)")
         }
         _catalogModel = State(initialValue: CatalogModel(catalogService: compositionRoot.catalogService))
+        
     }
+    
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
