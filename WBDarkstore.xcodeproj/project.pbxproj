@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9BE5837230549C1900639099 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 9BE5837130549C1900639099 /* Core */; };
-		9BE5837530549CF600639099 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 9BE5837430549CF600639099 /* Core */; };
+		9BEC8CCF3054AF710068C0FD /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 9BEC8CCE3054AF710068C0FD /* Core */; };
 		B714879B304ACC2500B9698A /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = B714879A304ACC2500B9698A /* DesignSystem */; };
 		B714879D304ACC2900B9698A /* BusinessLogic in Frameworks */ = {isa = PBXBuildFile; productRef = B714879C304ACC2900B9698A /* BusinessLogic */; };
 /* End PBXBuildFile section */
@@ -71,9 +70,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B714879B304ACC2500B9698A /* DesignSystem in Frameworks */,
-				9BE5837530549CF600639099 /* Core in Frameworks */,
 				B714879D304ACC2900B9698A /* BusinessLogic in Frameworks */,
-				9BE5837230549C1900639099 /* Core in Frameworks */,
+				9BEC8CCF3054AF710068C0FD /* Core in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,8 +158,7 @@
 			packageProductDependencies = (
 				B714879A304ACC2500B9698A /* DesignSystem */,
 				B714879C304ACC2900B9698A /* BusinessLogic */,
-				9BE5837130549C1900639099 /* Core */,
-				9BE5837430549CF600639099 /* Core */,
+				9BEC8CCE3054AF710068C0FD /* Core */,
 			);
 			productName = WBDarkstore;
 			productReference = B71075B5304A6F6900EDEC9A /* WBDarkstore.app */;
@@ -247,7 +244,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				B7148944304C769E00B9698A /* XCRemoteSwiftPackageReference "SwiftLint" */,
-				9BE5837330549CF600639099 /* XCLocalSwiftPackageReference "../GitHub/wb-darkstore/WBShop/Core" */,
+				9BEC8CCD3054AF710068C0FD /* XCLocalSwiftPackageReference "../GitHub/wb-darkstore/WBShop/Core" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B71075B6304A6F6900EDEC9A /* Products */;
@@ -485,7 +482,6 @@
 			};
 			name = Debug;
 		};
-		B71075D6304A6F6B00EDEC9A /* Release configuration for PBXNativeTarget "WBDarkstore" */ = {
 		B71075D6304A6F6B00EDEC9A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -647,7 +643,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		9BE5837330549CF600639099 /* XCLocalSwiftPackageReference "../GitHub/wb-darkstore/WBShop/Core" */ = {
+		9BEC8CCD3054AF710068C0FD /* XCLocalSwiftPackageReference "../GitHub/wb-darkstore/WBShop/Core" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = "../GitHub/wb-darkstore/WBShop/Core";
 		};
@@ -665,11 +661,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		9BE5837130549C1900639099 /* Core */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Core;
-		};
-		9BE5837430549CF600639099 /* Core */ = {
+		9BEC8CCE3054AF710068C0FD /* Core */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Core;
 		};
