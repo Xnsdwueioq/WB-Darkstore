@@ -13,6 +13,7 @@ struct WBDarkstoreApp: App {
     @State private var catalogModel: CatalogModel
     @State private var cartModel: CartModel
     @State private var orderModel: OrderModel
+    @State private var favoritesModel: FavoritesModel
     init() {
         guard let token = ProcessInfo.processInfo.environment["BEARER_TOKEN"] else {
             fatalError("BEARER_TOKEN is missing")
@@ -26,6 +27,7 @@ struct WBDarkstoreApp: App {
         catalogModel = CatalogModel(catalogService: compositionRoot.catalogService)
         cartModel = CartModel(cartService: compositionRoot.cartService)
         orderModel = OrderModel(orderService: compositionRoot.orderService)
+        favoritesModel = FavoritesModel(productService: compositionRoot.productService)
     }
     var body: some Scene {
         WindowGroup {
@@ -33,6 +35,7 @@ struct WBDarkstoreApp: App {
                 .environment(catalogModel)
                 .environment(cartModel)
                 .environment(orderModel)
+                .environment(favoritesModel)
         }
     }
 }
