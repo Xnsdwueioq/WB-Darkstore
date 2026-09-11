@@ -7,29 +7,25 @@
 
 import BusinessLogic
 import NetworkPackage
+import Foundation
+import Core
 
-struct CompositionRoot {
-    let catalogService: CatalogService
-    let productService: ProductService
-    let cartService: CartService
-    let orderService: OrderService
-    let addressService: AddressService
-    let profileService: ProfileService
+public struct CompositionRoot {
+    public init(token: String) throws {
+        let apiClient = APIClient(serverURL: URL(string: "https://eat-and-pay.t02.ru")!, token: token)
 
-    init(token: String) throws {
-        let apiClient = try APIClient(token: token)
-        let catalogAPI = CatalogAPI(apiClient: apiClient)
-        let productAPI = ProductAPI(apiClient: apiClient)
-        let cartAPI = CartAPI(apiClient: apiClient)
-        let orderAPI = OrderAPI(apiClient: apiClient)
         let addressAPI = AddressAPI(apiClient: apiClient)
+        let cartAPI = CartAPI(apiClient: apiClient)
+        let catalogAPI = CatalogAPI(apiClient: apiClient)
+        let orderAPI = OrderAPI(apiClient: apiClient)
+        let productAPI = ProductAPI(apiClient: apiClient)
         let profileAPI = ProfileAPI(apiClient: apiClient)
 
-        catalogService = CatalogService(api: catalogAPI)
-        productService = ProductService(productAPI: productAPI)
-        cartService = CartService(cartAPI: cartAPI)
-        orderService = OrderService(orderAPI: orderAPI)
-        addressService = AddressService(addressAPI: addressAPI)
-        profileService = ProfileService(profileAPI: profileAPI)
+        ServiceLocator.shared.register(service: AddressService(addressAPI: addressAPI) as AddressServiceProtocol)
+        ServiceLocator.shared.register(service: CartService(cartAPI: cartAPI) as CartServiceProtocol)
+        ServiceLocator.shared.register(service: CatalogService(api: catalogAPI) as CatalogServiceProtocol)
+        ServiceLocator.shared.register(service: OrderService(orderAPI: orderAPI) as OrderServiceProtocol)
+        ServiceLocator.shared.register(service: ProductService(productAPI: productAPI) as ProductServiceProtocol)
+        ServiceLocator.shared.register(service: ProfileService(profileAPI: profileAPI) as ProfileServiceProtocol)
     }
 }

@@ -17,6 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B71075B4304A6F6900EDEC9A"
                BuildableName = "WBDarkstore.app"
+               BlueprintName = "WBDarkstore"
                ReferencedContainer = "container:WBDarkstore.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -36,6 +37,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B71075C1304A6F6B00EDEC9A"
                BuildableName = "WBDarkstoreTests.xctest"
+               BlueprintName = "WBDarkstoreTests"
                ReferencedContainer = "container:WBDarkstore.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -46,6 +48,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B71075CB304A6F6B00EDEC9A"
                BuildableName = "WBDarkstoreUITests.xctest"
+               BlueprintName = "WBDarkstoreUITests"
                ReferencedContainer = "container:WBDarkstore.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -68,6 +71,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B71075B4304A6F6900EDEC9A"
             BuildableName = "WBDarkstore.app"
+            BlueprintName = "WBDarkstore"
             ReferencedContainer = "container:WBDarkstore.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -84,6 +88,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B71075B4304A6F6900EDEC9A"
             BuildableName = "WBDarkstore.app"
+            BlueprintName = "WBDarkstore"
             ReferencedContainer = "container:WBDarkstore.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
