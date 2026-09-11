@@ -24,12 +24,19 @@ struct ProductDetailView: View {
                                 switch phase {
                                 case .empty:
                                     ProgressView()
+                                        .frame(width: UIScreen.main.bounds.width, height: 440)
+                                        .background(Color(.systemGray6))
                                 case .success(let image):
-                                    image.resizable().clipped()
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: 440)
                                 case .failure:
                                     Image(systemName: "photo")
                                         .font(.largeTitle)
                                         .foregroundColor(.gray)
+                                        .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: 440)
+                                        .background(Color(.systemGray5))
                                 @unknown default:
                                     EmptyView()
                                 }

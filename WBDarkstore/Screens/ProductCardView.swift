@@ -26,12 +26,19 @@ struct ProductCardView: View {
                         switch phase {
                         case .empty:
                             ProgressView()
+                                .frame(width: width, height: imageHeight)
+                                .background(.gray)
                         case .success(let image):
-                            image.resizable().scaledToFill()
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: width, height: imageHeight)
                         case .failure:
                             Image(systemName: "photo")
                                 .font(.largeTitle)
                                 .foregroundColor(.gray)
+                                .frame(width: width, height: imageHeight)
+                                .background(Color(.systemGray5))
                         @unknown default:
                             EmptyView()
                         }
