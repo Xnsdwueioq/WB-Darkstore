@@ -23,7 +23,7 @@ struct ProductDetailContainerView: View {
                 ProductDetailView(
                     product: product,
                     onDismiss: onDismiss,
-                    onReviewAdded: { Task { await loadDetails() } } // ← новое
+                    onReviewAdded: { Task { await loadDetails() } }
                 )
             } else {
                 ProgressView("Загрузка...")

@@ -84,7 +84,7 @@ struct FavoriteButton: View {
                 .font(.system(size: 14, weight: .bold))
                 .foregroundColor(isFavorite ? .pink : .white)
                 .padding(6)
-                .background(.ultraThinMaterial, in: Circle())
+                .background(.gray.opacity(0.3), in: Circle())
         }
     }
 }

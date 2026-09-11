@@ -25,7 +25,7 @@ struct ProductDetailView: View {
                                 case .empty:
                                     ProgressView()
                                 case .success(let image):
-                                    image.resizable().scaledToFill()
+                                    image.resizable().clipped()
                                 case .failure:
                                     Image(systemName: "photo")
                                         .font(.largeTitle)
@@ -59,7 +59,7 @@ struct ProductDetailView: View {
                         }
 
                         HStack(alignment: .center, spacing: 6) {
-                            Text(String(format: "%.1f", product.rating))
+                            unsafe Text(String(format: "%.1f", product.rating))
                                 .font(.body)
 
                             RatingStarsView(rating: Double(product.rating))
@@ -75,6 +75,7 @@ struct ProductDetailView: View {
                                 .font(.body)
                                 .foregroundStyle(.primary)
                             }
+                            .buttonStyle(.plain)
                         }
 
                         Text(product.description)

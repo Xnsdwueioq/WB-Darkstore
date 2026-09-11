@@ -114,6 +114,7 @@ struct ReviewsView: View {
                     .padding(.horizontal, 16)
                     .padding(.bottom, 16)
                 }
+                .buttonStyle(.plain)
             }
 
             Button(action: onDismiss) {

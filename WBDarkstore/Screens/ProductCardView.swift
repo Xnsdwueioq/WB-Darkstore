@@ -79,6 +79,7 @@ struct ProductCardView: View {
                                 .foregroundColor(.white)
                         }
                     }
+                    .buttonStyle(.plain)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
                     .background(Color.purple)
@@ -96,6 +97,7 @@ struct ProductCardView: View {
                         .background(Color(.systemGray5))
                         .cornerRadius(10)
                     }
+                    .buttonStyle(.plain)
                     .transition(.scale.combined(with: .opacity))
                 }
             }
