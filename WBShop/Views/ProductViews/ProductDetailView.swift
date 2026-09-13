@@ -5,8 +5,13 @@ import Core
 struct ProductDetailView: View {
     let product: Product
     let onDismiss: () -> Void
+    @Injected private var cart: CartServicing
+    @Injected private var router: Router
     @State private var showReviews = false
 
+    private var quantity: Int {
+        cart.cartQuantities[product.id] ?? 0
+    }
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -94,11 +99,37 @@ struct ProductDetailView: View {
             }
             DSCloseButton(action: onDismiss)
         }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            DSProductDetailedButton(
+                quantity: quantity,
+                onIncrement: {
+                    Task { await cart.addProductToCart(id: product.id) }
+                },
+                onDecrement: {
+                    Task { await cart.removeProductFromCart(id: product.id) }
+                },
+                onOpenCart: openCart
+            )
+            .animation(.spring(response: 0.3, dampingFraction: 0.75), value: quantity)
+            .padding(.horizontal, DSSpacing.md)
+            .padding(.vertical, DSSpacing.md)
+            .background(DSColors.background)
+        }
         .sheet(isPresented: $showReviews) {
             ReviewsView(product: product) {
                 showReviews = false
             }
         }
+        .errorAlert(
+            message: cart.errorMessage,
+            onDismiss: { cart.clearErrorMessage() }
+        )
+    }
+
+    private func openCart() {
+        guard quantity > 0 else { return }
+        onDismiss()
+        router.selectTab(.cart)
     }
 }
 
