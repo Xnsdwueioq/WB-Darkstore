@@ -3,7 +3,6 @@ import Core
 import DSKit
 
 struct MainTabView: View {
-    @State private var selectedTab: MainTab = .catalog
     @Injected var router: Router
     @Injected private var cart: CartServicing
 
