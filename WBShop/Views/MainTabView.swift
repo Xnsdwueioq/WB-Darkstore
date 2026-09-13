@@ -61,7 +61,6 @@ struct MainTabView: View {
                         ) {
                             selectedTab = .cart
                         }
-                        Spacer()
                     } else {
                         Spacer()
                     }
