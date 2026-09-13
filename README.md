@@ -29,12 +29,12 @@ iOS dark store delivery app built as a team project.
 В терминале в корневой папке проекта выполните команду, чтобы создать локальный конфиг из шаблона:
 
 ```bash
-cp WBDarkstore/Config.xcconfig.template WBDarkstore/Config.xcconfig
+cp WBShop/Config.xcconfig.template WBShop/Config.xcconfig
 ```
 
 ### Шаг 2: Впишите свой токен
 
-Откройте `WBDarkstore/Config.xcconfig` и укажите значение токена:
+Откройте `WBShop/Config.xcconfig` и укажите значение токена:
 
 ```
 API_TOKEN = your_token_here
@@ -44,6 +44,6 @@ API_TOKEN = your_token_here
 
 При первом запуске приложение автоматически:
 
-1. Читает значение `API_TOKEN` из `Info.plist` (куда оно попадает из локального `WBDarkstore/Config.xcconfig` через build settings);
+1. Читает значение `API_TOKEN` из `Info.plist` (куда оно попадает из локального `WBShop/Config.xcconfig` через build settings);
 2. Сохраняет токен в Keychain через `KeychainHelper`;
 3. Все последующие запросы к API уже читают токен только из Keychain, а не из конфига.
