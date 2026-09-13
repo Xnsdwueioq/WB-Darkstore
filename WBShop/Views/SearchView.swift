@@ -17,9 +17,9 @@ struct SearchBarButton: View {
             }
             .frame(width: 129, height: 50)
             .background(DSColors.background.opacity(0.76))
-            .clipShape(RoundedRectangle(cornerRadius: DSRadius.md))
+            .clipShape(RoundedRectangle(cornerRadius: DSRadius.lg, style: .continuous))
             .overlay {
-                RoundedRectangle(cornerRadius: DSRadius.md)
+                RoundedRectangle(cornerRadius: DSRadius.lg)
                     .stroke(.black.opacity(0.1), lineWidth: 1)
             }
         }

@@ -3,7 +3,12 @@ import Core
 import DSKit
 
 struct MainTabView: View {
-    @Injected private var router: Router
+    @Injected var router: Router
+    @Injected private var cart: CartServicing
+
+    private var totalProductsCount: Int {
+        cart.productsInCart.reduce(0) { $0 + $1.quantity }
+    }
 
     var body: some View {
         @Bindable var router = router
@@ -37,11 +42,25 @@ struct MainTabView: View {
         }
         .overlay(alignment: .bottomLeading) {
             if router.selectedTab != .cart {
-                SearchBarButton {
-                    router.push(.search)
+                HStack(spacing: DSSpacing.sm) {
+                    SearchBarButton {
+                        router.push(.search)
+                    }
+
+                    if !cart.productsInCart.isEmpty {
+                        CheckoutFloatingButton(
+                            totalPrice: cart.totalPrice,
+                            itemsCount: totalProductsCount,
+                            fillWidth: true
+                        ) {
+                            router.selectTab(.cart)
+                        }
+                    } else {
+                        Spacer()
+                    }
                 }
-                    .padding(.horizontal, DSSpacing.lg)
-                    .padding(.bottom, 60)
+                .padding(.horizontal, DSSpacing.lg)
+                .padding(.bottom, 60)
             }
         }
     }
