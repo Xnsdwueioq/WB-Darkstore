@@ -12,6 +12,11 @@ enum MainTab {
 struct MainTabView: View {
     @State private var selectedTab: MainTab = .catalog
     @Injected var router: Router
+    @Injected private var cart: CartServicing
+
+    private var totalProductsCount: Int {
+        cart.productsInCart.reduce(0) { $0 + $1.quantity }
+    }
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -41,13 +46,28 @@ struct MainTabView: View {
                 }
             }
         }
-        .overlay(alignment: .bottomLeading) {
+        .overlay(alignment: .bottom) {
             if selectedTab != .cart {
-                SearchBarButton {
-                    router.push(.search)
+                HStack(spacing: DSSpacing.sm) {
+                    SearchBarButton {
+                        router.push(.search)
+                    }
+
+                    if !cart.productsInCart.isEmpty {
+                        CheckoutFloatingButton(
+                            totalPrice: cart.totalPrice,
+                            itemsCount: totalProductsCount,
+                            fillWidth: true
+                        ) {
+                            selectedTab = .cart
+                        }
+                        Spacer()
+                    } else {
+                        Spacer()
+                    }
                 }
-                    .padding(.horizontal, DSSpacing.lg)
-                    .padding(.bottom, 60)
+                .padding(.horizontal, DSSpacing.lg)
+                .padding(.bottom, 60)
             }
         }
     }
