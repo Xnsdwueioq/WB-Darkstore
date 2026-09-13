@@ -10,21 +10,32 @@ import BusinessLogic
 
 @main
 struct WBDarkstoreApp: App {
-//    @State private var catalogModel: any CatalogModelProtocol
-
+    @State private var catalogModel: CatalogModel
+    @State private var cartModel: CartModel
+    @State private var orderModel: OrderModel
+    @State private var favoritesModel: FavoritesModel
     init() {
         guard let token = ProcessInfo.processInfo.environment["BEARER_TOKEN"] else {
             fatalError("BEARER_TOKEN is missing")
         }
-
-//        let compositionRoot = try! CompositionRoot(token: token)
-
-        // инициализация catalogModel из compositionRoot
+        let compositionRoot: CompositionRoot
+        do {
+            compositionRoot = try CompositionRoot(token: token)
+        } catch {
+            fatalError("Не получилось создать CompositionRoot: \(error)")
+        }
+        catalogModel = CatalogModel(catalogService: compositionRoot.catalogService)
+        cartModel = CartModel(cartService: compositionRoot.cartService)
+        orderModel = OrderModel(orderService: compositionRoot.orderService)
+        favoritesModel = FavoritesModel(productService: compositionRoot.productService)
     }
-
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(catalogModel)
+                .environment(cartModel)
+                .environment(orderModel)
+                .environment(favoritesModel)
         }
     }
 }
