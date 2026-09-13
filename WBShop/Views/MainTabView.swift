@@ -2,19 +2,13 @@ import SwiftUI
 import Core
 import DSKit
 
-enum MainTab {
-    case catalog
-    case favorites
-    case cart
-    case categories
-}
-
 struct MainTabView: View {
-    @State private var selectedTab: MainTab = .catalog
-    @Injected var router: Router
+    @Injected private var router: Router
 
     var body: some View {
-        TabView(selection: $selectedTab) {
+        @Bindable var router = router
+
+        TabView(selection: $router.selectedTab) {
             Tab("Все товары",
                 systemImage: "square.grid.2x2",
                 value: MainTab.catalog) {
@@ -42,7 +36,7 @@ struct MainTabView: View {
             }
         }
         .overlay(alignment: .bottomLeading) {
-            if selectedTab != .cart {
+            if router.selectedTab != .cart {
                 SearchBarButton {
                     router.push(.search)
                 }
