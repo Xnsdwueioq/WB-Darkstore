@@ -7,6 +7,7 @@
 
 import SwiftUI
 import BusinessLogic
+import Core
 
 @main
 struct WBDarkstoreApp: App {
