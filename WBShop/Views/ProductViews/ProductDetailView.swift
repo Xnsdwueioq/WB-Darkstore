@@ -110,6 +110,7 @@ struct ProductDetailView: View {
                 },
                 onOpenCart: openCart
             )
+            .animation(.spring(response: 0.3, dampingFraction: 0.75), value: quantity)
             .padding(.horizontal, DSSpacing.md)
             .padding(.vertical, DSSpacing.md)
             .background(DSColors.background)

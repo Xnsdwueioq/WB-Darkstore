@@ -52,8 +52,10 @@ public struct DSProductDetailedButton: View {
                     .frame(maxWidth: .infinity)
                     .accessibilityHint("Открывает корзину")
             }
+            .transition(.scale.combined(with: .opacity))
         } else {
             DSButton(title: "В корзину", style: .gradient, size: .medium, fillWidth: true, action: onIncrement)
+                .transition(.scale.combined(with: .opacity))
         }
     }
 }
