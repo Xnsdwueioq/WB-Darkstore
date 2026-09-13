@@ -5,6 +5,7 @@ import Core
 struct ProductDetailView: View {
     let product: Product
     let onDismiss: () -> Void
+    @Injected var productService: ProductServicing
     @State private var showReviews = false
 
 
@@ -49,8 +50,22 @@ struct ProductDetailView: View {
                     }
 
                     VStack(alignment: .leading, spacing: DSSpacing.xs) {
-                        DSPriceText(Double(product.price))
-                            .font(DSTypography.display)
+                        HStack {
+                            DSPriceText(Double(product.price))
+                                .font(DSTypography.display)
+                            
+                            Spacer()
+                            
+                            Button {
+                                Task {await productService.toggleFavorite(id: product.id)}
+                            } label: {
+                                Image(productService.isFavorite(id: product.id) ? "PinkHeart" : "GreyHeart")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 30, height: 30)
+                            }
+                            .buttonStyle(.plain)
+                        }
                         
                         HStack {
                             Text(product.name)

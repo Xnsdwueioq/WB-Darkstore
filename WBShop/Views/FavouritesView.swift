@@ -54,12 +54,12 @@ struct FavoriteButton: View {
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: isFavorite ? "heart.fill" : "heart")
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(isFavorite ? Color(red: 227/255, green: 19/255, blue: 191/255) : DSColors.white)
+            Image(isFavorite ? "PinkHeart" : "GreyHeart")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 24, height: 24)
                 .scaleEffect(isFavorite ? 1.15 : 1.0)
                 .padding(8)
-                .background(.black.opacity(0.35))
                 .clipShape(Circle())
         }
         .buttonStyle(.plain)
