@@ -5,7 +5,9 @@ import DSKit
 struct ProfileView: View {
     @Injected var userService: UserServicing
     @State private var user: User?
+    @State private var activeOrder: Order?
     @Injected var router: Router
+    @State private var selectedOrder: Order?
 
     private var initials: String {
             String(user?.name.first.map(String.init) ?? "?").uppercased()
@@ -46,16 +48,29 @@ struct ProfileView: View {
                     }
                 }
                 .padding(.top, DSSpacing.sm)
-                
+
+                if let activeOrder {
+                    ActiveOrderCard(order: activeOrder) {
+                        selectedOrder = activeOrder
+                    }
+                    .padding(.top, DSSpacing.lg)
+                }
+
                 Text("История заказов")
                     .font(DSTypography.order.weight(.regular))
                     .padding(.top, DSSpacing.lg)
                 
                 OrderHistoryView()
             }
+            .sheet(item: $selectedOrder) { order in
+                OrderDetailView(order: order) {
+                    selectedOrder = nil
+                }
+            }
             .padding(DSSpacing.lg)
             .task {
                 user = await userService.getProfileInfo()
+                activeOrder = await userService.getActiveOrder()
             }
             .background(DSColors.background)
             .navigationTitle("Профиль")
