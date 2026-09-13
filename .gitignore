@@ -19,3 +19,6 @@ playground.xcworkspace
 
 Packages/*/Package.resolved
 WBDarkstore.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+
+# Local API credentials
+WBDarkstore/Config.xcconfig

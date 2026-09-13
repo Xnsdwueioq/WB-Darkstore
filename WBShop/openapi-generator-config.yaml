@@ -1,0 +1,10 @@
+generate:
+  - types
+  - client
+
+filter:
+  tags:
+    - Товары
+    - Корзина
+    - Заказы
+    - О пользователе
