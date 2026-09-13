@@ -2,19 +2,18 @@ import SwiftUI
 import Core
 import DSKit
 
-enum MainTab {
-    case catalog
-    case favorites
-    case cart
-    case categories
-}
-
 struct MainTabView: View {
-    @State private var selectedTab: MainTab = .catalog
     @Injected var router: Router
+    @Injected private var cart: CartServicing
+
+    private var totalProductsCount: Int {
+        cart.productsInCart.reduce(0) { $0 + $1.quantity }
+    }
 
     var body: some View {
-        TabView(selection: $selectedTab) {
+        @Bindable var router = router
+
+        TabView(selection: $router.selectedTab) {
             Tab("Все товары",
                 systemImage: "square.grid.2x2",
                 value: MainTab.catalog) {
@@ -42,12 +41,26 @@ struct MainTabView: View {
             }
         }
         .overlay(alignment: .bottomLeading) {
-            if selectedTab != .cart {
-                SearchBarButton {
-                    router.push(.search)
+            if router.selectedTab != .cart {
+                HStack(spacing: DSSpacing.sm) {
+                    SearchBarButton {
+                        router.push(.search)
+                    }
+
+                    if !cart.productsInCart.isEmpty {
+                        CheckoutFloatingButton(
+                            totalPrice: cart.totalPrice,
+                            itemsCount: totalProductsCount,
+                            fillWidth: true
+                        ) {
+                            router.selectTab(.cart)
+                        }
+                    } else {
+                        Spacer()
+                    }
                 }
-                    .padding(.horizontal, DSSpacing.lg)
-                    .padding(.bottom, 60)
+                .padding(.horizontal, DSSpacing.lg)
+                .padding(.bottom, 60)
             }
         }
     }

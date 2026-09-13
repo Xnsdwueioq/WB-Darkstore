@@ -19,6 +19,7 @@ protocol UserServicing {
     func editProfile(_ user: User) async -> Bool
     func logout() async -> Bool
     func deleteAccount() async -> Bool
+    func getActiveOrder() async -> Order?
 }
 
 @Observable
@@ -187,7 +188,7 @@ final class UserService: UserServicing {
             errorMessage = nil
         }
     }
-    
+
     func getOrders() async {
         do {
             let response = try await client.get_sol_orders(.init())
@@ -266,5 +267,13 @@ final class UserService: UserServicing {
             handleNetworkError(error)
         }
         return false
+    }
+
+    func getActiveOrder() async -> Order? {
+        if orders.isEmpty {
+            await getOrders()
+        }
+
+        return orders.first(where: { $0.status == .active })
     }
 }
