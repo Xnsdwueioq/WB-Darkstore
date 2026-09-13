@@ -54,7 +54,7 @@ struct MainTabView: View {
                             itemsCount: totalProductsCount,
                             fillWidth: true
                         ) {
-                            router.selectedTab(.cart)
+                            router.selectTab(.cart)
                         }
                     } else {
                         Spacer()
