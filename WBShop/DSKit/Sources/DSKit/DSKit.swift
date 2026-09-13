@@ -273,6 +273,35 @@ public struct DSCard<Content: View>: View {
     }
 }
 
+public struct DSInfoBanner: View {
+    private let title: String
+    private let message: String
+
+    public init(title: String, message: String) {
+        self.title = title
+        self.message = message
+    }
+
+    public var body: some View {
+        HStack(alignment: .top, spacing: DSSpacing.md) {
+            Image(systemName: "info.circle.fill")
+                .font(DSTypography.body)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: DSSpacing.xs) {
+                Text(title)
+                    .font(DSTypography.bodyBold)
+                Text(message)
+                    .font(DSTypography.caption)
+            }
+        }
+        .foregroundStyle(DSColors.primary)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(DSSpacing.lg)
+        .background(DSColors.lightPurple, in: RoundedRectangle(cornerRadius: DSRadius.lg))
+    }
+}
+
 public enum DSColors {
     public static let primary = Color.purple
     public static let secondary = Color.gray
