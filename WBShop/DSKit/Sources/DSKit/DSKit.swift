@@ -341,6 +341,8 @@ public enum DSColors {
     public static let white = Color.white
     public static let lightPurple = Color.purple.opacity(0.1)
     public static let smoky = Color(hex: "F6F6FA")
+    public static let favoriteActive = Color(hex: "E313BF")
+    public static let favoriteInactive = Color(hex: "B9B9B8")
 }
 
 public enum DSSpacing {

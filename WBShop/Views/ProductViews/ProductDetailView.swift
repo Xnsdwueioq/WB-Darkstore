@@ -59,10 +59,11 @@ struct ProductDetailView: View {
                             Button {
                                 Task {await productService.toggleFavorite(id: product.id)}
                             } label: {
-                                Image(productService.isFavorite(id: product.id) ? "PinkHeart" : "GreyHeart")
+                                Image("HeartIcon")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 30, height: 30)
+                                    .foregroundStyle(productService.isFavorite(id: product.id) ? DSColors.favoriteActive : DSColors.favoriteInactive)
                             }
                             .buttonStyle(.plain)
                         }
