@@ -2,9 +2,11 @@ import SwiftUI
 import Core
 
 struct AppRootView: View {
-    @StateObject private var router: Router = ServiceLocator.shared.resolve()
+    @Injected private var router: Router
 
     var body: some View {
+        @Bindable var router = router
+
         NavigationStack(path: $router.path) {
             ZStack {
                 if router.isAuthenticated {

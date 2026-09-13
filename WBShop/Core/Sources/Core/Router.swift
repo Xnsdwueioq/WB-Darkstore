@@ -1,4 +1,12 @@
+import Observation
 import SwiftUI
+
+public enum MainTab: Hashable, Sendable {
+    case catalog
+    case favorites
+    case cart
+    case categories
+}
 
 public enum Route: Hashable {
     case content
@@ -13,11 +21,14 @@ public protocol RouterProtocol: AnyObject {
     func push(_ route: Route)
     func pop()
     func popToRoot()
+    func selectTab(_ tab: MainTab)
 }
 
-public final class Router: ObservableObject, RouterProtocol {
-    @Published public var path = NavigationPath()
-    @Published public var isAuthenticated = false
+@Observable
+public final class Router: RouterProtocol {
+    public var path = NavigationPath()
+    public var isAuthenticated = false
+    public var selectedTab: MainTab = .catalog
 
     public init() {}
 
@@ -32,6 +43,11 @@ public final class Router: ObservableObject, RouterProtocol {
 
     public func popToRoot() {
         path.removeLast(path.count)
+    }
+
+    public func selectTab(_ tab: MainTab) {
+        popToRoot()
+        selectedTab = tab
     }
 
     public func login() {
