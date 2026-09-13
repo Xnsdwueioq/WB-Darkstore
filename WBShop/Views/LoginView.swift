@@ -16,7 +16,7 @@ struct LoginView: View {
                 .font(DSTypography.title)
 
             DSTextField(placeholder: "Номер телефона", text: $phone)
-            DSTextField(placeholder: "Пароль", text: $password)
+            DSSecureField(placeholder: "Пароль", text: $password)
 
             if let errorMessage {
                 Text(errorMessage)

@@ -254,6 +254,32 @@ public struct DSTextField: View {
     }
 }
 
+public struct DSSecureField: View {
+    private let placeholder: String
+    @Binding private var text: String
+
+    public init(placeholder: String, text: Binding<String>) {
+        self.placeholder = placeholder
+        self._text = text
+    }
+
+    public var body: some View {
+        SecureField(placeholder, text: $text)
+            .textContentType(.password)
+            .font(DSTypography.body)
+            .padding(.horizontal, DSSpacing.xl)
+            .frame(height: 50)
+            .background(
+                RoundedRectangle(cornerRadius: DSRadius.lg)
+                    .fill(DSColors.background.opacity(0.76))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: DSRadius.lg)
+                    .stroke(DSColors.border, lineWidth: 0.5)
+            )
+    }
+}
+
 public struct DSCard<Content: View>: View {
     private let content: Content
 
@@ -270,6 +296,35 @@ public struct DSCard<Content: View>: View {
         .background(DSColors.surface)
         .cornerRadius(DSRadius.lg)
         .shadow(radius: 4)
+    }
+}
+
+public struct DSInfoBanner: View {
+    private let title: String
+    private let message: String
+
+    public init(title: String, message: String) {
+        self.title = title
+        self.message = message
+    }
+
+    public var body: some View {
+        HStack(alignment: .top, spacing: DSSpacing.md) {
+            Image(systemName: "info.circle.fill")
+                .font(DSTypography.body)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: DSSpacing.xs) {
+                Text(title)
+                    .font(DSTypography.bodyBold)
+                Text(message)
+                    .font(DSTypography.caption)
+            }
+        }
+        .foregroundStyle(DSColors.primary)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(DSSpacing.lg)
+        .background(DSColors.lightPurple, in: RoundedRectangle(cornerRadius: DSRadius.lg))
     }
 }
 

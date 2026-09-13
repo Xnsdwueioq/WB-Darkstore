@@ -21,6 +21,14 @@ struct CartView: View {
         cart.productsInCart.reduce(0) { $0 + $1.quantity }
     }
 
+    private var hasActiveOrder: Bool {
+        return userService.orders.filter { $0.status == .active }.count >= 1
+    }
+
+    private var isButtonDisabled: Bool {
+        cart.productsInCart.isEmpty || hasUnavailableProducts || userService.addresses.isEmpty || isPlacingOrder || hasActiveOrder
+    }
+
     var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack(alignment: .leading, spacing: DSSpacing.cartTitleSpacingList) {
@@ -118,13 +126,33 @@ struct CartView: View {
                             size: .medium,
                             fillWidth: true
                         ) {
-                            Task { await placeOrder() }
+                            Task {
+                                // если с другого устройства сделали заказ, пока открыта cart view
+                                await userService.getOrders()
+
+                                if !hasActiveOrder {
+                                    await placeOrder()
+                                }
+
+                                // апдейт после заказа
+                                await userService.getOrders()
+                            }
                         }
                         .buttonStyle(.plain)
-                        .disabled(cart.productsInCart.isEmpty || hasUnavailableProducts || userService.addresses.isEmpty || isPlacingOrder)
-                        .opacity((hasUnavailableProducts || userService.addresses.isEmpty || cart.productsInCart.isEmpty) ? 0.5 : 1)
+                        .disabled(isButtonDisabled)
+                        .opacity(isButtonDisabled ? 0.5 : 1)
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
+                        if hasActiveOrder {
+                            DSInfoBanner(
+                                title: "Ваш заказ уже в работе",
+                                message: "Новый заказ можно будет оформить, когда текущий завершится."
+                            )
+                            .padding(.horizontal, DSSpacing.md)
+                            .listRowInsets(EdgeInsets(top: DSSpacing.md, leading: 0, bottom: DSSpacing.lg, trailing: 0))
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                        }
                     }
                     .listStyle(.plain)
                     .scrollContentBackground(.hidden)
@@ -133,6 +161,7 @@ struct CartView: View {
         }
         .task {
             await cart.fetchProducts()
+            await userService.getOrders()
         }
         .fullScreenCover(isPresented: $isOrderSuccessPresented) {
             DSSuccessScreen(
