@@ -81,7 +81,7 @@ struct ProductDetailView: View {
                                 .font(DSTypography.title)
                                 .foregroundStyle(DSColors.secondary)
                         }
-                        HStack (alignment: .center) {
+                        HStack(alignment: .center) {
                             Text(String(format: "%.1f", product.rating))
                                 .font(DSTypography.body)
 
@@ -103,7 +103,6 @@ struct ProductDetailView: View {
                             }
                         }
                         .padding(.top, DSSpacing.xs)
-
 
                         Text(product.description)
                             .font(DSTypography.body)

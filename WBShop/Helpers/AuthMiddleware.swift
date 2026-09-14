@@ -13,13 +13,13 @@ struct AuthMiddleware: ClientMiddleware {
         var request = request
         let serviceName = "com.wbshop.api"
         let accountName = "authToken"
-        
+
         if let token = KeychainHelper.shared.read(service: serviceName, account: accountName) {
             request.headerFields[.authorization] = "Bearer \(token)"
         } else {
             print("Токен не найден в Keychain")
         }
-        
+
         return try await next(request, body, baseURL)
     }
 }

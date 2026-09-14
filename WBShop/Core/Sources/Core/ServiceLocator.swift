@@ -11,7 +11,7 @@ public final class ServiceLocator: ServiceLocating, @unchecked Sendable {
 
     private init() {
         let router = Router()
-        register(service: router)   
+        register(service: router)
         register(service: router as RouterProtocol)
     }
 

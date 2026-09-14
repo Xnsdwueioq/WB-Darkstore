@@ -48,7 +48,7 @@ struct ContentView: View {
             await productService.fetchProducts()
         }
         .sheet(item: $selectedProduct) { preview in
-            ProductDetailContainerView(previewID: preview.id){
+            ProductDetailContainerView(previewID: preview.id) {
                 selectedProduct = nil
             }
                 .presentationDetents([.large])

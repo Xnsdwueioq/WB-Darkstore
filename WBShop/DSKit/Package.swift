@@ -6,14 +6,14 @@ import PackageDescription
 let package = Package(
     name: "DSKit",
     platforms: [
-        .iOS(.v18),
+        .iOS(.v18)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "DSKit",
             targets: ["DSKit"]
-        ),
+        )
     ],
     dependencies: [
         .package(
@@ -35,7 +35,7 @@ let package = Package(
                     package: "SwiftLint"
                 )
             ]
-        ),
+        )
 
     ],
     swiftLanguageModes: [.v6]

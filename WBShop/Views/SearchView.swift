@@ -31,7 +31,7 @@ struct SearchView: View {
     @State private var query = ""
     @State private var selectedProduct: ProductPreview?
     @State private var searchResults: [ProductPreview] = []
-    
+
     @Injected private var searchService: SearchServicing
     @Injected private var productService: ProductServicing
 

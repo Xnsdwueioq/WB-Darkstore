@@ -11,21 +11,21 @@ final class AddressSearchCompleter: NSObject, ObservableObject, MKLocalSearchCom
             completer.queryFragment = queryFragment
         }
     }
-    
+
     private let completer = MKLocalSearchCompleter()
-    
+
     override init() {
         super.init()
         completer.delegate = self
         completer.resultTypes = .address
     }
-    
+
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         Task { @MainActor in
             self.searchResults = completer.results
         }
     }
-    
+
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
         // Обработка ошибок поиска
     }
@@ -49,7 +49,7 @@ struct AddressFormView: View {
     @State private var centerCoordinate: CLLocationCoordinate2D
     @State private var isGeocoding = false
     @State private var geocodeTask: Task<Void, Never>?
-    
+
     @StateObject private var searchCompleter = AddressSearchCompleter()
     @State private var isSearching = false
 
@@ -91,11 +91,11 @@ struct AddressFormView: View {
 
                     VStack(alignment: .leading, spacing: DSSpacing.sm) {
                         DSTextField(placeholder: "Введите адрес или выберите на карте", text: $addressLine)
-                            .onChange(of: addressLine) { oldValue, newValue in
+                            .onChange(of: addressLine) { _, newValue in
                                 isSearching = true
                                 searchCompleter.queryFragment = newValue
                             }
-                       
+
                         if isSearching && !searchCompleter.searchResults.isEmpty {
                             VStack(alignment: .leading) {
                                 ForEach(searchCompleter.searchResults, id: \.self) { result in
@@ -212,26 +212,26 @@ struct AddressFormView: View {
     private func selectAddressCompletion(_ completion: MKLocalSearchCompletion) {
         isSearching = false
         hideKeyboard()
-        
+
         Task {
             do {
                 let searchRequest = MKLocalSearch.Request(completion: completion)
                 let search = MKLocalSearch(request: searchRequest)
                 let response = try await search.start()
-                
+
                 guard let coordinate = response.mapItems.first?.placemark.coordinate else { return }
-                
+
                 let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
                 let geocoder = CLGeocoder()
-                
+
                 let placemarks = try? await geocoder.reverseGeocodeLocation(location)
                 let placemark = placemarks?.first
-                
+
                 var formattedAddress = completion.title + (completion.subtitle.isEmpty ? "" : ", \(completion.subtitle)")
-                
+
                 if let placemark {
                     var components: [String] = []
-                    
+
                     if let city = placemark.locality ?? placemark.subAdministrativeArea {
                         components.append(city)
                     }
@@ -241,15 +241,15 @@ struct AddressFormView: View {
                     if let houseNumber = placemark.subThoroughfare {
                         components.append(houseNumber)
                     }
-                    
+
                     if !components.isEmpty {
                         formattedAddress = components.joined(separator: ", ")
                     }
                 }
-                
+
                 self.centerCoordinate = coordinate
                 self.addressLine = formattedAddress
-                
+
                 withAnimation {
                     self.cameraPosition = .region(
                         MKCoordinateRegion(
@@ -265,7 +265,7 @@ struct AddressFormView: View {
 
     private func reverseGeocode(_ coordinate: CLLocationCoordinate2D) {
         geocodeTask?.cancel()
-         
+
         geocodeTask = Task {
             try? await Task.sleep(nanoseconds: 500_000_000)
             guard !Task.isCancelled else { return }
@@ -281,15 +281,15 @@ struct AddressFormView: View {
                 guard !Task.isCancelled, let placemark = placemarks.first else { return }
 
                 var components: [String] = []
-                 
+
                 if let city = placemark.locality ?? placemark.subAdministrativeArea {
                     components.append(city)
                 }
-                 
+
                 if let street = placemark.thoroughfare {
                     components.append(street)
                 }
-                 
+
                 if let houseNumber = placemark.subThoroughfare {
                     components.append(houseNumber)
                 }
@@ -302,7 +302,7 @@ struct AddressFormView: View {
             }
         }
     }
-    
+
     private func hideKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
@@ -322,7 +322,7 @@ struct AddressesSelectionListView: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            VStack() {
+            VStack {
                 Text("Мои адреса")
                     .font(DSTypography.display)
                     .frame(maxWidth: .infinity, alignment: .leading)

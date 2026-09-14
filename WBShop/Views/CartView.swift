@@ -223,7 +223,7 @@ struct CartView: View {
 }
 
 #Preview {
-    CartView() {
+    CartView {
         print()
     }
 }
@@ -246,8 +246,7 @@ struct CartItemView: View {
 
                         case .success(let image):
                             image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
+                                .resizable().scaledToFill()
                                 .frame(width: 100, height: 100)
                                 .clipped()
 

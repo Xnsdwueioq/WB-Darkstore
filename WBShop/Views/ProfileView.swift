@@ -28,12 +28,12 @@ struct ProfileView: View {
                                 .font(DSTypography.headline)
                                 .foregroundColor(DSColors.black)
                         }
-                        
+
                         VStack(alignment: .leading, spacing: 0) {
                             Text(user?.name.isEmpty == false ? user!.name : "Нет имени")
                                 .font(DSTypography.body.weight(.semibold))
                                 .foregroundColor(DSColors.black)
-                            
+
                             HStack {
                                 Text(user?.phone.isEmpty == false ? user!.phone : "Нет номера телефона")
                                     .font(DSTypography.caption)
@@ -44,7 +44,7 @@ struct ProfileView: View {
                             }
                         }
                         Spacer()
-                        
+
                     }
                 }
                 .padding(.top, DSSpacing.sm)
@@ -59,7 +59,7 @@ struct ProfileView: View {
                 Text("История заказов")
                     .font(DSTypography.order.weight(.regular))
                     .padding(.top, DSSpacing.lg)
-                
+
                 OrderHistoryView()
             }
             .sheet(item: $selectedOrder) { order in

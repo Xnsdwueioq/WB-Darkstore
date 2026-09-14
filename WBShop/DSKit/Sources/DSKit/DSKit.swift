@@ -43,7 +43,7 @@ extension LinearGradient {
         startPoint: UnitPoint(x: 0.004, y: 0.437),
         endPoint: UnitPoint(x: 0.996, y: 0.563)
     )
-    
+
     public static let figmaSubtlePinkPurple = LinearGradient(
         gradient: Gradient(stops: [
             .init(color: Color(hex: "FEF1FB"), location: 0.0049),
@@ -95,7 +95,7 @@ public enum DSButtonStyle {
             return .white
         }
     }
-    
+
     var outline: Color {
         switch self {
         case .white:
@@ -214,7 +214,7 @@ public struct DSButton: View {
 
 public struct DSCloseButton: View {
     let action: () -> Void
-    
+
     public init(action: @escaping () -> Void) {
         self.action = action
     }
@@ -391,7 +391,7 @@ public struct DSCounterView: View {
         self.onIncrement = onIncrement
         self.onDecrement = onDecrement
     }
-    
+
     public var body: some View {
         HStack(spacing: DSSpacing.lg) {
             Button(action: onDecrement) {

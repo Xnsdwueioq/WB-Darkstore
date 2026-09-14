@@ -22,8 +22,8 @@ private struct OrderStatusPresentation {
 struct OrderDetailView: View {
     let order: Order
     let onDismiss: () -> Void
-    var onRepeatOrder: (() -> Void)? = nil
-    var onDownloadReceipt: (() -> Void)? = nil
+    var onRepeatOrder: (() -> Void)?
+    var onDownloadReceipt: (() -> Void)?
 
     private var statusPresentation: OrderStatusPresentation {
         OrderStatusPresentation.make(for: order)
@@ -160,8 +160,7 @@ struct OrderItemRowView: View {
 
                         case .success(let image):
                             image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
+                                .resizable().scaledToFill()
                                 .frame(width: 100, height: 100)
                                 .clipped()
 
@@ -187,7 +186,7 @@ struct OrderItemRowView: View {
             .frame(width: 100, height: 100)
 
             VStack(alignment: .leading, spacing: DSSpacing.xs) {
-                HStack (spacing: 0) {
+                HStack(spacing: 0) {
                     DSPriceText(Double(item.price * item.quantity), font: DSTypography.bodyBold)
                     Text(", \(item.quantity) шт")
                         .font(DSTypography.bodyBold)
