@@ -19,7 +19,7 @@ struct MainTabView: View {
                 value: MainTab.catalog) {
                 ContentView()
             }
-            
+
             Tab("Категории",
                 systemImage: "list.bullet",
                 value: MainTab.categories) {

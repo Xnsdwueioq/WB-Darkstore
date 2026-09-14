@@ -6,7 +6,7 @@ struct ProductCardView: View {
     let product: ProductPreview
     var width: CGFloat = 174
     @Injected var cart: CartServicing
-    
+
     private var imageHeight: CGFloat {
         width * (256.0 / /*174*/ 256.0)
     }
@@ -81,20 +81,19 @@ struct ProductCardView: View {
             }
             .animation(.spring(response: 0.3, dampingFraction: 0.75), value: quantity)
 
-
             HStack {
                 Text(product.name)
                     .font(DSTypography.caption)
                     .lineLimit(2)
                     .frame(height: 37, alignment: .topLeading)
-                
+
                 Text("\(product.weight, specifier: "%.0f") г")
                     .font(DSTypography.caption)
                     .foregroundColor(DSColors.secondary)
                     .frame(height: 37, alignment: .topLeading)
-                
+
             }
-            
+
             HStack {
                 if quantity > 0 {
                     HStack(spacing: DSSpacing.sm) {
@@ -109,13 +108,11 @@ struct ProductCardView: View {
                                 .contentShape(Rectangle())
                         }
 
-
                         Text("\(totalPrice) ₽")
                             .font(DSTypography.caption)
                             .bold()
                             .foregroundColor(.white)
                             .lineLimit(1)
-
 
                         Button {
                             Task {

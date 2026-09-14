@@ -40,7 +40,7 @@ struct CartView: View {
                         .foregroundStyle(DSColors.secondary)
                     Spacer()
                 }
-                .padding(.top, DSSpacing.sm_md)
+                .padding(.top, DSSpacing.smMd)
                 .padding(.horizontal, DSSpacing.md)
 
                 if cart.productsInCart.isEmpty {
@@ -223,7 +223,7 @@ struct CartView: View {
 }
 
 #Preview {
-    CartView() {
+    CartView {
         print()
     }
 }
@@ -246,8 +246,7 @@ struct CartItemView: View {
 
                         case .success(let image):
                             image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
+                                .resizable().scaledToFill()
                                 .frame(width: 100, height: 100)
                                 .clipped()
 

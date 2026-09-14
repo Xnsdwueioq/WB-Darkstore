@@ -19,6 +19,7 @@
 		9B3295032FF12AB80092C1FD /* WBShop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WBShop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B5FD6162FF5405C00C15709 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		9B9E3AD13007E0CA004B4C31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B7B68B7F30583245006D5756 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -62,6 +63,7 @@
 		9B3294FA2FF12AB70092C1FD = {
 			isa = PBXGroup;
 			children = (
+				B7B68B7F30583245006D5756 /* .swiftlint.yml */,
 				9B9E3AD13007E0CA004B4C31 /* README.md */,
 				9B5FD6162FF5405C00C15709 /* .gitignore */,
 				9B3295052FF12AB80092C1FD /* WBShop */,
@@ -99,6 +101,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				B7B68B7830582E5B006D5756 /* PBXTargetDependency */,
 				9B6BA5FE2FF13F4B00552D03 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
@@ -144,6 +147,7 @@
 				9B54D7682FF13E0300C00622 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */,
 				9B54D76B2FF13E0900C00622 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */,
 				9B6BA5FC2FF13F2900552D03 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
+				B7B68B7430582E41006D5756 /* XCRemoteSwiftPackageReference "SwiftLint" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9B3295042FF12AB80092C1FD /* Products */;
@@ -181,6 +185,10 @@
 		9B6BA5FE2FF13F4B00552D03 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 9B6BA5FD2FF13F4B00552D03 /* OpenAPIGenerator */;
+		};
+		B7B68B7830582E5B006D5756 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = B7B68B7730582E5B006D5756 /* SwiftLintBuildToolPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -442,6 +450,14 @@
 				minimumVersion = 1.12.2;
 			};
 		};
+		B7B68B7430582E41006D5756 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.65.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -467,6 +483,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9B6BA5FC2FF13F2900552D03 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */;
 			productName = "plugin:OpenAPIGenerator";
+		};
+		B7B68B7730582E5B006D5756 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B7B68B7430582E41006D5756 /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

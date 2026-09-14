@@ -12,7 +12,7 @@ struct FavoritesView: View {
                 .font(DSTypography.display)
             Spacer()
         }
-        .padding(.top, DSSpacing.sm_md)
+        .padding(.top, DSSpacing.smMd)
         .padding(.horizontal, DSSpacing.md)
 
         ProductGridView(
