@@ -250,7 +250,9 @@ actor CartStore {
 
         return snapshot(errorMessage: failures.first)
     }
+}
 
+extension CartStore {
     func createOrder(paymentMethod: String, addressId: String) async -> Snapshot {
         do {
             let response = try await client.post_sol_orders(

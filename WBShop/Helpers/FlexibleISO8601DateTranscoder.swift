@@ -2,11 +2,11 @@ import OpenAPIRuntime
 import Foundation
 
 struct FlexibleISO8601DateTranscoder: DateTranscoder {
-    private let formatter: ISO8601DateFormatter = {
+    private var formatter: ISO8601DateFormatter {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime]
         return formatter
-    }()
+    }
 
     func encode(_ date: Date) throws -> String {
         formatter.string(from: date)

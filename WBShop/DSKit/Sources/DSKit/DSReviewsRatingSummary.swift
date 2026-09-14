@@ -81,7 +81,9 @@ public struct DSReviewsRatingSummary: View {
 
                     Rectangle()
                         .fill(DSColors.black)
-                        .frame(width: largestCount > 0 ? geometry.size.width * CGFloat(count) / CGFloat(largestCount) : 0)
+                        .frame(
+                            width: largestCount > 0 ? geometry.size.width * CGFloat(count) / CGFloat(largestCount) : 0
+                        )
                 }
                 .frame(height: 2)
                 .frame(maxHeight: .infinity)

@@ -138,6 +138,9 @@ final class ProductService: ProductServicing {
     func toggleFavorite(id: String) async {
         let wasFavorite = favoriteIds.contains(id)
         let newValue = !wasFavorite
+        let revert: (String?, String) async -> Void = { message, fallback in
+            await self.handleError(message, default: fallback, revertFavorite: id, isFavorite: wasFavorite)
+        }
 
         await MainActor.run {
             applyFavoriteChange(id: id, isFavorite: newValue)
@@ -151,54 +154,25 @@ final class ProductService: ProductServicing {
                 case .ok:
                     break
                 case .unauthorized(let error):
-                    await handleError(
-                        try? error.body.json.error,
-                        default: "Требуется авторизация",
-                        revertFavorite: id,
-                        isFavorite: wasFavorite
-                    )
+                    await revert(try? error.body.json.error, "Требуется авторизация")
                 case .notFound(let error):
-                    await handleError(
-                        try? error.body.json.error,
-                        default: "Товар не найден",
-                        revertFavorite: id,
-                        isFavorite: wasFavorite
-                    )
+                    await revert(try? error.body.json.error, "Товар не найден")
                 case .default(let statusCode, let error):
-                    await handleError(
-                        try? error.body.json.error,
-                        default: "Ошибка сервера (\(statusCode))",
-                        revertFavorite: id,
-                        isFavorite: wasFavorite
-                    )
+                    await revert(try? error.body.json.error, "Ошибка сервера (\(statusCode))")
                 }
             } else {
-                let response = try await client.delete_sol_products_sol__lcub_id_rcub__sol_favourite(path: .init(id: id))
+                let response = try await client
+                    .delete_sol_products_sol__lcub_id_rcub__sol_favourite(path: .init(id: id))
 
                 switch response {
                 case .ok:
                     break
                 case .unauthorized(let error):
-                    await handleError(
-                        try? error.body.json.error,
-                        default: "Требуется авторизация",
-                        revertFavorite: id,
-                        isFavorite: wasFavorite
-                    )
+                    await revert(try? error.body.json.error, "Требуется авторизация")
                 case .notFound(let error):
-                    await handleError(
-                        try? error.body.json.error,
-                        default: "Товар не найден",
-                        revertFavorite: id,
-                        isFavorite: wasFavorite
-                    )
+                    await revert(try? error.body.json.error, "Товар не найден")
                 case .default(let statusCode, let error):
-                    await handleError(
-                        try? error.body.json.error,
-                        default: "Ошибка сервера (\(statusCode))",
-                        revertFavorite: id,
-                        isFavorite: wasFavorite
-                    )
+                    await revert(try? error.body.json.error, "Ошибка сервера (\(statusCode))")
                 }
             }
         } catch {
@@ -207,7 +181,12 @@ final class ProductService: ProductServicing {
     }
 
     @MainActor
-    private func handleError(_ message: String?, default defaultMessage: String, revertFavorite id: String? = nil, isFavorite: Bool = false) {
+    private func handleError(
+        _ message: String?,
+        default defaultMessage: String,
+        revertFavorite id: String? = nil,
+        isFavorite: Bool = false
+    ) {
         self.errorMessage = message ?? defaultMessage
         if let id {
             applyFavoriteChange(id: id, isFavorite: isFavorite)

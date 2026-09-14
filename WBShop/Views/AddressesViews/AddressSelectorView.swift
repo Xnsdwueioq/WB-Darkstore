@@ -25,7 +25,8 @@ struct AddressSelectorView: View {
     }
 
     private var selectedAddress: IdentifiableAddress? {
-        if !selectedAddressId.isEmpty, let address = userService.addresses.first(where: { $0.id == selectedAddressId }) {
+        if !selectedAddressId.isEmpty,
+           let address = userService.addresses.first(where: { $0.id == selectedAddressId }) {
             return address
         }
         return userService.addresses.first

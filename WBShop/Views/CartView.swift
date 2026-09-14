@@ -26,7 +26,8 @@ struct CartView: View {
     }
 
     private var isButtonDisabled: Bool {
-        cart.productsInCart.isEmpty || hasUnavailableProducts || userService.addresses.isEmpty || isPlacingOrder || hasActiveOrder
+        cart.productsInCart.isEmpty || hasUnavailableProducts || userService.addresses.isEmpty
+            || isPlacingOrder || hasActiveOrder
     }
 
     var body: some View {
@@ -157,7 +158,9 @@ struct CartView: View {
                                     message: "Новый заказ можно будет оформить, когда текущий завершится."
                                 )
                                 .padding(.horizontal, DSSpacing.md)
-                                .listRowInsets(EdgeInsets(top: DSSpacing.md, leading: 0, bottom: DSSpacing.lg, trailing: 0))
+                                .listRowInsets(
+                                    EdgeInsets(top: DSSpacing.md, leading: 0, bottom: DSSpacing.lg, trailing: 0)
+                                )
                                 .listRowSeparator(.hidden)
                                 .listRowBackground(Color.clear)
                             }

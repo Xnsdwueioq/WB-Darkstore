@@ -145,13 +145,19 @@ struct ReviewsView: View {
 struct ReviewView: View {
     let review: Review
 
+    private var formattedDate: String {
+        review.createdAt.formatted(
+            .dateTime.day().month(.abbreviated).locale(Locale(identifier: "ru_RU"))
+        )
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: DSSpacing.sm) {
             HStack(spacing: DSSpacing.xs) {
                 RatingStarsView(rating: Double(review.rating), starSize: DSTypography.body)
                 Text(review.author)
                     .font(DSTypography.body)
-                Text(", \(review.createdAt.formatted(.dateTime.day().month(.abbreviated).locale(Locale(identifier: "ru_RU"))))")
+                Text(", \(formattedDate)")
                     .font(DSTypography.body)
                     .foregroundStyle(DSColors.secondary)
             }
