@@ -25,20 +25,20 @@ struct ProductDetailView: View {
                                 ProgressView()
                                     .frame(width: UIScreen.main.bounds.width, height: 440)
                                     .background(Color(.systemGray6))
-                                
+
                             case .success(let image):
                                 image
                                     .resizable()
                                     .scaledToFill()
                                     .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: 440)
-                                
+
                             case .failure:
                                 Image(systemName: "photo")
                                     .font(.largeTitle)
                                     .foregroundColor(.gray)
                                     .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: 440)
                                     .background(Color(.systemGray5))
-                                
+
                             @unknown default:
                                 EmptyView()
                             }
@@ -58,9 +58,9 @@ struct ProductDetailView: View {
                         HStack {
                             DSPriceText(Double(product.price))
                                 .font(DSTypography.display)
-                            
+
                             Spacer()
-                            
+
                             Button {
                                 Task {await productService.toggleFavorite(id: product.id)}
                             } label: {
@@ -72,11 +72,11 @@ struct ProductDetailView: View {
                             }
                             .buttonStyle(.plain)
                         }
-                        
+
                         HStack {
                             Text(product.name)
                                 .font(DSTypography.title)
-                            
+
                             Text("\(Int(product.weight))г")
                                 .font(DSTypography.title)
                                 .foregroundStyle(DSColors.secondary)
@@ -84,9 +84,9 @@ struct ProductDetailView: View {
                         HStack (alignment: .center) {
                             Text(String(format: "%.1f", product.rating))
                                 .font(DSTypography.body)
-                            
+
                             RatingStarsView(rating: Double(product.rating), starSize: DSTypography.caption)
-                            
+
                             Button {
                                 showReviews = true
                             } label: {
@@ -102,8 +102,9 @@ struct ProductDetailView: View {
                                 .foregroundStyle(DSColors.black)
                             }
                         }
+                        .padding(.top, DSSpacing.xs)
 
-                        
+
                         Text(product.description)
                             .font(DSTypography.body)
                             .padding(.top, DSSpacing.lg)

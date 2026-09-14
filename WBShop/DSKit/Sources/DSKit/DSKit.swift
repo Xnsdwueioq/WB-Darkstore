@@ -353,7 +353,7 @@ public enum DSSpacing {
     public static let lg: CGFloat = 16
     public static let xl: CGFloat = 20
     public static let xxl: CGFloat = 24
-    public static let cartTitleSpacingList: CGFloat = 49
+    public static let cartTitleSpacingList: CGFloat = 20
 
 }
 
@@ -366,7 +366,7 @@ public enum DSRadius {
 }
 
 public enum DSTypography {
-    public static let display = Font.custom("Inter", size: 32)
+    public static let display = Font.custom("Inter", size: 32).weight(.medium)
     public static let success = Font.custom("Inter", size: 56).weight(.semibold)
     public static let title = Font.custom("Inter", size: 26).weight(.semibold)
     public static let headline = Font.custom("Inter", size: 24).weight(.bold)
