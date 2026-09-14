@@ -13,6 +13,7 @@
 		9B54D76D2FF13E0900C00622 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = 9B54D76C2FF13E0900C00622 /* OpenAPIURLSession */; };
 		9B5FD6182FF5406400C15709 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 9B5FD6162FF5405C00C15709 /* .gitignore */; };
 		9B9E3AD23007E0CA004B4C31 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 9B9E3AD13007E0CA004B4C31 /* README.md */; };
+		B7B68DAC30585A58006D5756 /* BusinessLogic in Frameworks */ = {isa = PBXBuildFile; productRef = B7B68DAB30585A58006D5756 /* BusinessLogic */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,8 @@
 		9B5FD6162FF5405C00C15709 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		9B9E3AD13007E0CA004B4C31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B7B68B7F30583245006D5756 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		B7B68D973058599A006D5756 /* NetworkPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = NetworkPackage; path = WBShop/NetworkPackage; sourceTree = "<group>"; };
+		B7B68DA2305859E9006D5756 /* BusinessLogic */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = BusinessLogic; path = WBShop/BusinessLogic; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -51,6 +54,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B4A41D030028C2600724075 /* DSKit in Frameworks */,
+				B7B68DAC30585A58006D5756 /* BusinessLogic in Frameworks */,
 				9B54D76A2FF13E0300C00622 /* OpenAPIRuntime in Frameworks */,
 				9B54D76D2FF13E0900C00622 /* OpenAPIURLSession in Frameworks */,
 				9B4A41CD30028C2200724075 /* Core in Frameworks */,
@@ -63,6 +67,8 @@
 		9B3294FA2FF12AB70092C1FD = {
 			isa = PBXGroup;
 			children = (
+				B7B68DA2305859E9006D5756 /* BusinessLogic */,
+				B7B68D973058599A006D5756 /* NetworkPackage */,
 				B7B68B7F30583245006D5756 /* .swiftlint.yml */,
 				9B9E3AD13007E0CA004B4C31 /* README.md */,
 				9B5FD6162FF5405C00C15709 /* .gitignore */,
@@ -113,6 +119,7 @@
 				9B54D76C2FF13E0900C00622 /* OpenAPIURLSession */,
 				9B4A41CC30028C2200724075 /* Core */,
 				9B4A41CF30028C2600724075 /* DSKit */,
+				B7B68DAB30585A58006D5756 /* BusinessLogic */,
 			);
 			productName = WBShop;
 			productReference = 9B3295032FF12AB80092C1FD /* WBShop.app */;
@@ -488,6 +495,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B7B68B7430582E41006D5756 /* XCRemoteSwiftPackageReference "SwiftLint" */;
 			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+		B7B68DAB30585A58006D5756 /* BusinessLogic */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BusinessLogic;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
