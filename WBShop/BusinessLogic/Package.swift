@@ -1,4 +1,4 @@
-// swift-tools-version: 6.2
+// swift-tools-version: 6.3
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -7,6 +7,7 @@ let package = Package(
     name: "BusinessLogic",
     platforms: [
         .iOS(.v18),
+        .macOS(.v14)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -44,7 +45,12 @@ let package = Package(
                     name: "SwiftLintBuildToolPlugin",
                     package: "SwiftLint"
                 ),
-            ],
+            ]
         ),
-    ]
+        .testTarget(
+            name: "BusinessLogicTests",
+            dependencies: ["BusinessLogic"]
+        ),
+    ],
+    swiftLanguageModes: [.v6]
 )

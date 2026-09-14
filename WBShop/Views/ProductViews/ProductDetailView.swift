@@ -1,5 +1,6 @@
 import SwiftUI
-import DSKit
+import DesignSystem
+import BusinessLogic
 import Core
 
 struct ProductDetailView: View {

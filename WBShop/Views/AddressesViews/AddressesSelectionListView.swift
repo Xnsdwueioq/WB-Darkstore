@@ -1,10 +1,11 @@
 import SwiftUI
 import Core
-import DSKit
+import DesignSystem
+import BusinessLogic
 
 struct AddressFormPayload: Identifiable {
     let id: String
-    let address: Components.Schemas.Address?
+    let address: Address?
     let addressID: String?
 }
 
@@ -133,7 +134,7 @@ struct AddressesSelectionListView: View {
         .listRowInsets(EdgeInsets(top: 0, leading: DSSpacing.md, bottom: DSSpacing.sm, trailing: DSSpacing.md))
     }
 
-    private func addressDetails(_ address: Components.Schemas.Address) -> String {
+    private func addressDetails(_ address: Address) -> String {
         var parts: [String] = []
         if let floor = address.floor, !floor.isEmpty { parts.append("\(floor) этаж") }
         if let entrance = address.entrance, !entrance.isEmpty { parts.append("\(entrance) подъезд") }

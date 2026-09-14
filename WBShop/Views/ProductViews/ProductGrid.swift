@@ -1,5 +1,6 @@
 import SwiftUI
-import DSKit
+import DesignSystem
+import BusinessLogic
 
 struct ProductGridView: View {
     let products: [ProductPreview]

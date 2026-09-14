@@ -1,10 +1,7 @@
 import SwiftUI
-import OpenAPIRuntime
-import DSKit
 import Core
-
-extension ProductPreview: Identifiable {
-}
+import DesignSystem
+import BusinessLogic
 
 struct ContentView: View {
     @Injected var productService: ProductServicing

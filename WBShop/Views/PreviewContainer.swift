@@ -1,6 +1,8 @@
 #if DEBUG
 import Foundation
 import Core
+import DesignSystem
+import BusinessLogic
 
 @MainActor
 enum PreviewContainer {
@@ -16,12 +18,13 @@ enum PreviewContainer {
         ServiceLocator.shared.register(service: PreviewCategoryService() as CategoryServicing)
         ServiceLocator.shared.register(service: PreviewCartService(products: products.products) as CartServicing)
         ServiceLocator.shared.register(service: PreviewUserService() as UserServicing)
-        ServiceLocator.shared.register(service: SearchService() as SearchServicing)
+        ServiceLocator.shared.register(service: SearchService(productService: products) as SearchServicing)
         ServiceLocator.shared.register(service: AuthService() as AuthServicing)
     }
 }
 
 @Observable
+@MainActor
 private final class PreviewProductService: ProductServicing {
     var products: [ProductPreview] = [
         ProductPreview(id: "apple",
@@ -56,8 +59,8 @@ private final class PreviewProductService: ProductServicing {
         guard let preview = products.first(where: { $0.id == id }) else { return nil }
         return Product(
             id: preview.id,
-            image: preview.image,
             name: preview.name,
+            image: preview.image,
             weight: preview.weight,
             price: preview.price,
             rating: preview.rating,
@@ -93,7 +96,9 @@ private final class PreviewProductService: ProductServicing {
 }
 
 @Observable
+@MainActor
 private final class PreviewCategoryService: CategoryServicing {
+    typealias Category = BusinessLogic.Category
     var errorMessage: String?
     var categories: [Category] = [
         Category(
@@ -115,6 +120,7 @@ private final class PreviewCategoryService: CategoryServicing {
 }
 
 @Observable
+@MainActor
 private final class PreviewCartService: CartServicing {
     var productsInCart: [CartProduct] = []
     var errorMessage: String?
@@ -177,8 +183,8 @@ private final class PreviewUserService: UserServicing {
 
     func currentUserName() async -> String { "Гость" }
     func getAddresses() async {}
-    func addAddress(_ address: Components.Schemas.Address) async -> Bool { false }
-    func updateAddress(id: String, _ address: Components.Schemas.Address) async -> Bool { false }
+    func addAddress(_ address: Address) async -> Bool { false }
+    func updateAddress(id: String, _ address: Address) async -> Bool { false }
     func deleteAddress(id: String) async {}
     func clearErrorMessage() { errorMessage = nil }
     func getOrders() async {}

@@ -1,7 +1,8 @@
 import SwiftUI
 import MapKit
 import Core
-import DSKit
+import DesignSystem
+import BusinessLogic
 internal import Combine
 
 final class AddressSearchCompleter: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
@@ -34,10 +35,10 @@ final class AddressSearchCompleter: NSObject, ObservableObject, MKLocalSearchCom
 struct AddressFormView: View {
     @Environment(\.dismiss) private var dismiss
 
-    let addressToEdit: Components.Schemas.Address?
+    let addressToEdit: Address?
     let addressID: String?
-    var onSave: (Components.Schemas.Address) -> Void
-    var onUpdate: (String, Components.Schemas.Address) -> Void
+    var onSave: (Address) -> Void
+    var onUpdate: (String, Address) -> Void
 
     @State private var addressLine: String = ""
     @State private var comment: String = ""
@@ -56,10 +57,10 @@ struct AddressFormView: View {
     private var isEditing: Bool { addressToEdit != nil }
 
     init(
-        addressToEdit: Components.Schemas.Address?,
+        addressToEdit: Address?,
         addressID: String?,
-        onSave: @escaping (Components.Schemas.Address) -> Void,
-        onUpdate: @escaping (String, Components.Schemas.Address) -> Void
+        onSave: @escaping (Address) -> Void,
+        onUpdate: @escaping (String, Address) -> Void
     ) {
         self.addressToEdit = addressToEdit
         self.addressID = addressID
@@ -141,7 +142,7 @@ struct AddressFormView: View {
 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Сохранить") {
-                        let address = Components.Schemas.Address(
+                        let address = Address(
                             coordinates: [centerCoordinate.latitude, centerCoordinate.longitude],
                             addressLine: addressLine,
                             floor: floor,

@@ -7,7 +7,8 @@
 
 import SwiftUI
 import Core
-import DSKit
+import DesignSystem
+import BusinessLogic
 import SwiftData
 
 @main
@@ -21,13 +22,25 @@ struct WBShopApp: App {
             fatalError("Не удалось создать ModelContainer: \(error)")
         }
 
-        ServiceLocator.shared.register(service: AuthService() as AuthServicing)
-        ServiceLocator.shared.register(service: UserService() as UserServicing)
-        ServiceLocator.shared.register(service: CartService(modelContainer: modelContainer) as CartServicing)
-        ServiceLocator.shared.register(service: ProductService() as ProductServicing)
-        ServiceLocator.shared.register(service: CategoryService() as CategoryServicing)
-        ServiceLocator.shared.register(service: SearchService() as SearchServicing)
         setupApiToken()
+
+        do {
+            let container = try BusinessLogicContainer(
+                modelContainer: modelContainer,
+                tokenProvider: {
+                    KeychainHelper.shared.read(service: "com.wbshop.api", account: "authToken")
+                }
+            )
+            ServiceLocator.shared.register(service: container.authService as AuthServicing)
+            ServiceLocator.shared.register(service: container.userService as UserServicing)
+            ServiceLocator.shared.register(service: container.cartService as CartServicing)
+            ServiceLocator.shared.register(service: container.productService as ProductServicing)
+            ServiceLocator.shared.register(service: container.categoryService as CategoryServicing)
+            ServiceLocator.shared.register(service: container.searchService as SearchServicing)
+        } catch {
+            fatalError("Не удалось инициализировать BusinessLogicContainer: \(error)")
+        }
+
         FontRegister.registerFonts()
     }
 
@@ -45,7 +58,6 @@ struct WBShopApp: App {
         if KeychainHelper.shared.read(service: serviceName, account: accountName) == nil {
             if let plistPath = Bundle.main.object(forInfoDictionaryKey: "APIToken") as? String,
                !plistPath.isEmpty {
-
                 KeychainHelper.shared.save(plistPath, service: serviceName, account: accountName)
             }
         }

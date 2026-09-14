@@ -1,6 +1,7 @@
 import SwiftUI
 import Core
-import DSKit
+import DesignSystem
+import BusinessLogic
 
 struct CategoriesView: View {
     @Injected var categoryService: CategoryServicing
@@ -51,7 +52,7 @@ struct CategoriesView: View {
 }
 
 struct CategoryCardView: View {
-    let category: Category
+    let category: BusinessLogic.Category
 
     var body: some View {
         VStack(alignment: .leading, spacing: DSSpacing.xs) {

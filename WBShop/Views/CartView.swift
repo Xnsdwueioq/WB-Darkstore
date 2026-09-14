@@ -1,8 +1,7 @@
 import SwiftUI
 import Core
-import DSKit
-
-extension Components.Schemas.Order: Identifiable {}
+import DesignSystem
+import BusinessLogic
 
 struct CartView: View {
     let onDismiss: () -> Void

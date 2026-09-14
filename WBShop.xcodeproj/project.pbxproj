@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9B4A41CD30028C2200724075 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 9B4A41CC30028C2200724075 /* Core */; };
-		9B4A41D030028C2600724075 /* DSKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9B4A41CF30028C2600724075 /* DSKit */; };
-		9B54D76A2FF13E0300C00622 /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 9B54D7692FF13E0300C00622 /* OpenAPIRuntime */; };
-		9B54D76D2FF13E0900C00622 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = 9B54D76C2FF13E0900C00622 /* OpenAPIURLSession */; };
+		9B4A41D030028C2600724075 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 9B4A41CF30028C2600724075 /* DesignSystem */; };
 		9B5FD6182FF5406400C15709 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 9B5FD6162FF5405C00C15709 /* .gitignore */; };
 		9B9E3AD23007E0CA004B4C31 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 9B9E3AD13007E0CA004B4C31 /* README.md */; };
 		B7B68DAC30585A58006D5756 /* BusinessLogic in Frameworks */ = {isa = PBXBuildFile; productRef = B7B68DAB30585A58006D5756 /* BusinessLogic */; };
@@ -29,9 +27,11 @@
 		9B4A41B430028B7600724075 /* Exceptions for "WBShop" folder in "WBShop" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				BusinessLogic,
 				Core,
-				DSKit,
+				DesignSystem,
 				Info.plist,
+				NetworkPackage,
 			);
 			target = 9B3295022FF12AB80092C1FD /* WBShop */;
 		};
@@ -53,11 +53,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9B4A41D030028C2600724075 /* DSKit in Frameworks */,
-				B7B68DAC30585A58006D5756 /* BusinessLogic in Frameworks */,
-				9B54D76A2FF13E0300C00622 /* OpenAPIRuntime in Frameworks */,
-				9B54D76D2FF13E0900C00622 /* OpenAPIURLSession in Frameworks */,
 				9B4A41CD30028C2200724075 /* Core in Frameworks */,
+				9B4A41D030028C2600724075 /* DesignSystem in Frameworks */,
+				B7B68DAC30585A58006D5756 /* BusinessLogic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,17 +106,14 @@
 			);
 			dependencies = (
 				B7B68B7830582E5B006D5756 /* PBXTargetDependency */,
-				9B6BA5FE2FF13F4B00552D03 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				9B3295052FF12AB80092C1FD /* WBShop */,
 			);
 			name = WBShop;
 			packageProductDependencies = (
-				9B54D7692FF13E0300C00622 /* OpenAPIRuntime */,
-				9B54D76C2FF13E0900C00622 /* OpenAPIURLSession */,
 				9B4A41CC30028C2200724075 /* Core */,
-				9B4A41CF30028C2600724075 /* DSKit */,
+				9B4A41CF30028C2600724075 /* DesignSystem */,
 				B7B68DAB30585A58006D5756 /* BusinessLogic */,
 			);
 			productName = WBShop;
@@ -151,9 +146,6 @@
 			mainGroup = 9B3294FA2FF12AB70092C1FD;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				9B54D7682FF13E0300C00622 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */,
-				9B54D76B2FF13E0900C00622 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */,
-				9B6BA5FC2FF13F2900552D03 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
 				B7B68B7430582E41006D5756 /* XCRemoteSwiftPackageReference "SwiftLint" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -189,10 +181,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		9B6BA5FE2FF13F4B00552D03 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 9B6BA5FD2FF13F4B00552D03 /* OpenAPIGenerator */;
-		};
 		B7B68B7830582E5B006D5756 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = B7B68B7730582E5B006D5756 /* SwiftLintBuildToolPlugin */;
@@ -433,30 +421,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		9B54D7682FF13E0300C00622 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-openapi-runtime";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.12.0;
-			};
-		};
-		9B54D76B2FF13E0900C00622 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-openapi-urlsession";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.1;
-			};
-		};
-		9B6BA5FC2FF13F2900552D03 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-openapi-generator";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.12.2;
-			};
-		};
 		B7B68B7430582E41006D5756 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/SwiftLint";
@@ -472,24 +436,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Core;
 		};
-		9B4A41CF30028C2600724075 /* DSKit */ = {
+		9B4A41CF30028C2600724075 /* DesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = DSKit;
-		};
-		9B54D7692FF13E0300C00622 /* OpenAPIRuntime */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9B54D7682FF13E0300C00622 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */;
-			productName = OpenAPIRuntime;
-		};
-		9B54D76C2FF13E0900C00622 /* OpenAPIURLSession */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9B54D76B2FF13E0900C00622 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */;
-			productName = OpenAPIURLSession;
-		};
-		9B6BA5FD2FF13F4B00552D03 /* OpenAPIGenerator */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9B6BA5FC2FF13F2900552D03 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */;
-			productName = "plugin:OpenAPIGenerator";
+			productName = DesignSystem;
 		};
 		B7B68B7730582E5B006D5756 /* SwiftLintBuildToolPlugin */ = {
 			isa = XCSwiftPackageProductDependency;

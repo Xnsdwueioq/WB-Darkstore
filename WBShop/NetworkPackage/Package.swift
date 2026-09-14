@@ -1,4 +1,4 @@
-// swift-tools-version: 6.2
+// swift-tools-version: 6.3
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -7,6 +7,7 @@ let package = Package(
     name: "NetworkPackage",
     platforms: [
         .iOS(.v18),
+        .macOS(.v14)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -30,7 +31,11 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/apple/swift-openapi-urlsession",
-            from: "1.3.0"
+            from: "1.3.1"
+        ),
+        .package(
+            url: "https://github.com/apple/swift-http-types",
+            from: "1.6.0"
         ),
     ],
     targets: [
@@ -47,16 +52,29 @@ let package = Package(
                     name: "OpenAPIURLSession",
                     package: "swift-openapi-urlsession"
                 ),
+                .product(
+                    name: "HTTPTypes",
+                    package: "swift-http-types"
+                ),
             ],
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
             ],
             plugins: [
                 .plugin(
+                    name: "OpenAPIGenerator",
+                    package: "swift-openapi-generator"
+                ),
+                .plugin(
                     name: "SwiftLintBuildToolPlugin",
                     package: "SwiftLint"
                 ),
             ]
         ),
-    ]
+        .testTarget(
+            name: "NetworkPackageTests",
+            dependencies: ["NetworkPackage"]
+        ),
+    ],
+    swiftLanguageModes: [.v6]
 )
