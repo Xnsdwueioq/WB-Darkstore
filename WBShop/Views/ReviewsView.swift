@@ -44,20 +44,6 @@ struct ReviewsView: View {
     let onDismiss: () -> Void
     @State private var showAddReview = false
     @State private var selectedSortOption: ReviewSortOption = .newest
-    private var averageRating: Double {
-        let count = product.reviews?.count ?? 0
-
-        guard count > 0 else {
-            return 0
-        }
-
-        let totalRating = product.reviews?
-            .compactMap(\.rating)
-            .reduce(0, +) ?? 0
-
-        return Double(totalRating) / Double(count)
-    }
-
     private var sortedReviews: [Review] {
             guard let reviews = product.reviews else { return [] }
 
@@ -83,26 +69,12 @@ struct ReviewsView: View {
             let count = self.product.reviews?.count ?? 0
             
             VStack(spacing: 16) {
-                HStack {
-                    Text("Отзывы")
-                        .font(DSTypography.headline)
-                        .frame(alignment: .leading)
-                    Text("\(count)")
-                        .font(DSTypography.headline)
-                        .foregroundStyle(DSColors.secondary.opacity(0.8))
-                    Spacer()
-                }
+                DSReviewsRatingSummary(ratings: product.reviews?.map(\.rating) ?? [])
                 .padding(.horizontal, DSSpacing.lg)
                 .padding(.top, DSSpacing.lg)
 
                 ScrollView {
                     VStack(spacing: DSSpacing.md) {
-                        HStack {
-                            Text(String(format: "%.1f", averageRating))
-                                .font(DSTypography.reviewAvgRating)
-                            Spacer()
-                        }
-                        
                         DSButton(title: "Написать отзыв", style: .lightPurple, fillWidth: true) {
                             showAddReview = true
                         }
@@ -190,7 +162,7 @@ struct ReviewView: View {
         }
         .padding(DSSpacing.lg)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(DSColors.secondary.opacity(0.1))
+        .background(DSColors.smoky)
         .cornerRadius(16)
     }
 }
