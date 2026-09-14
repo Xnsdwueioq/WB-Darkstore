@@ -121,7 +121,7 @@ struct SuggestionRow: View {
                 .foregroundColor(.black)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, DSSpacing.md)
-                .padding(.vertical, DSSpacing.sm_md)
+                .padding(.vertical, DSSpacing.smMd)
         }
         .buttonStyle(.plain)
     }

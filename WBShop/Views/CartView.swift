@@ -40,7 +40,7 @@ struct CartView: View {
                         .foregroundStyle(DSColors.secondary)
                     Spacer()
                 }
-                .padding(.top, DSSpacing.sm_md)
+                .padding(.top, DSSpacing.smMd)
                 .padding(.horizontal, DSSpacing.md)
 
                 if cart.productsInCart.isEmpty {

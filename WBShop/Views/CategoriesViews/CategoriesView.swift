@@ -19,7 +19,7 @@ struct CategoriesView: View {
                 Text("Каталог")
                     .font(DSTypography.display)
                     .padding(.horizontal, DSSpacing.md)
-                    .padding(.top, DSSpacing.sm_md)
+                    .padding(.top, DSSpacing.smMd)
 
                 if categoryService.categories.isEmpty {
                     CategoriesEmptyView()
