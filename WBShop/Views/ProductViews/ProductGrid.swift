@@ -46,15 +46,8 @@ struct ProductGridView: View {
 
 struct EmptyStateView: View {
     var body: some View {
-        VStack(spacing: DSSpacing.md) {
-            Image(systemName: "heart")
-                .font(DSTypography.title)
-                .foregroundColor(DSColors.secondary)
-            Text("Пока пусто")
-                .font(DSTypography.title)
-                .foregroundColor(DSColors.secondary)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.top, 80)
+        ContentUnavailableView("Список товаров пока что пуст", systemImage: "archivebox.fill")
+            .frame(maxWidth: .infinity)
+            .padding(.top, 80)
     }
 }
