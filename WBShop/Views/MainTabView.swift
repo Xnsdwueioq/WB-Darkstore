@@ -1,6 +1,7 @@
 import SwiftUI
 import Core
-import DSKit
+import DesignSystem
+import BusinessLogic
 
 struct MainTabView: View {
     @Injected var router: Router

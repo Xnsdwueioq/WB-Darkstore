@@ -5,7 +5,7 @@
 //  Created by Полина Гельман on 13.09.2026.
 //
 import SwiftUI
-import DSKit
+import DesignSystem
 
 struct CheckoutFloatingButton: View {
     let totalPrice: Int

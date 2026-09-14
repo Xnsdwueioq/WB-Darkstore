@@ -1,5 +1,6 @@
 import SwiftUI
-import DSKit
+import DesignSystem
+import BusinessLogic
 import Core
 
 struct ProductCardView: View {
@@ -81,17 +82,33 @@ struct ProductCardView: View {
             }
             .animation(.spring(response: 0.3, dampingFraction: 0.75), value: quantity)
 
-            HStack {
-                Text(product.name)
-                    .font(DSTypography.caption)
-                    .lineLimit(2)
-                    .frame(height: 37, alignment: .topLeading)
+            VStack(alignment: .leading, spacing: 3) {
+                HStack {
+                    Text(product.name)
+                        .font(DSTypography.caption)
+                        .lineLimit(2)
 
-                Text("\(product.weight, specifier: "%.0f") г")
-                    .font(DSTypography.caption)
-                    .foregroundColor(DSColors.secondary)
-                    .frame(height: 37, alignment: .topLeading)
+                    Text("\(product.weight, specifier: "%.0f") г")
+                        .font(DSTypography.caption)
+                        .foregroundColor(DSColors.secondary)
+                }
 
+                HStack(spacing: DSSpacing.xs) {
+                    DSRatingLabel(rating: Double(product.rating))
+
+                    HStack(spacing: 3) {
+                        Image("review")
+                            .resizable()
+                            .frame(width: 13, height: 12)
+                            .accessibilityHidden(true)
+
+                        Text("\(product.reviewCount)")
+                            .font(DSTypography.caption)
+                            .foregroundStyle(DSColors.black)
+                    }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Отзывов: \(product.reviewCount)")
+                }
             }
 
             HStack {

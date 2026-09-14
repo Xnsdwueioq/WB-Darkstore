@@ -1,7 +1,8 @@
 import SwiftUI
 import MapKit
 import Core
-import DSKit
+import DesignSystem
+import BusinessLogic
 internal import Combine
 
 final class AddressSearchCompleter: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
@@ -34,10 +35,10 @@ final class AddressSearchCompleter: NSObject, ObservableObject, MKLocalSearchCom
 struct AddressFormView: View {
     @Environment(\.dismiss) private var dismiss
 
-    let addressToEdit: Components.Schemas.Address?
+    let addressToEdit: Address?
     let addressID: String?
-    var onSave: (Components.Schemas.Address) -> Void
-    var onUpdate: (String, Components.Schemas.Address) -> Void
+    var onSave: (Address) -> Void
+    var onUpdate: (String, Address) -> Void
 
     @State private var addressLine: String = ""
     @State private var comment: String = ""
@@ -56,10 +57,10 @@ struct AddressFormView: View {
     private var isEditing: Bool { addressToEdit != nil }
 
     init(
-        addressToEdit: Components.Schemas.Address?,
+        addressToEdit: Address?,
         addressID: String?,
-        onSave: @escaping (Components.Schemas.Address) -> Void,
-        onUpdate: @escaping (String, Components.Schemas.Address) -> Void
+        onSave: @escaping (Address) -> Void,
+        onUpdate: @escaping (String, Address) -> Void
     ) {
         self.addressToEdit = addressToEdit
         self.addressID = addressID
@@ -141,7 +142,7 @@ struct AddressFormView: View {
 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Сохранить") {
-                        let address = Components.Schemas.Address(
+                        let address = Address(
                             coordinates: [centerCoordinate.latitude, centerCoordinate.longitude],
                             addressLine: addressLine,
                             floor: floor,
@@ -227,7 +228,8 @@ struct AddressFormView: View {
                 let placemarks = try? await geocoder.reverseGeocodeLocation(location)
                 let placemark = placemarks?.first
 
-                var formattedAddress = completion.title + (completion.subtitle.isEmpty ? "" : ", \(completion.subtitle)")
+                var formattedAddress = completion.title
+                    + (completion.subtitle.isEmpty ? "" : ", \(completion.subtitle)")
 
                 if let placemark {
                     var components: [String] = []
@@ -305,145 +307,5 @@ struct AddressFormView: View {
 
     private func hideKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
-
-struct AddressFormPayload: Identifiable {
-    let id: String
-    let address: Components.Schemas.Address?
-    let addressID: String?
-}
-
-struct AddressesSelectionListView: View {
-    @Environment(\.dismiss) private var dismiss
-    @Injected private var userService: UserServicing
-    @Binding var selectedAddressId: String?
-    @State private var formPayload: AddressFormPayload?
-
-    var body: some View {
-        ZStack(alignment: .topTrailing) {
-            VStack {
-                Text("Мои адреса")
-                    .font(DSTypography.display)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, DSSpacing.md)
-                    .padding(.top, DSSpacing.xl)
-                    .padding(.bottom, DSSpacing.md)
-
-                List {
-                    ForEach(userService.addresses) { item in
-                        addressRow(for: item)
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button(role: .destructive) {
-                                Task {
-                                    _ = await userService.deleteAddress(id: item.id)
-
-                                    if selectedAddressId == item.id {
-                                        selectedAddressId = userService.addresses.first { $0.id != item.id }?.id
-                                    }
-                                }
-                            } label: {
-                                Label("Удалить", systemImage: "trash")
-                            }
-                        }
-                    }
-
-                    Button {
-                        formPayload = AddressFormPayload(id: "new", address: nil, addressID: nil)
-                    } label: {
-                        HStack(spacing: DSSpacing.sm) {
-                            Image(systemName: "plus")
-                            Text("Новый адрес")
-                        }
-                        .foregroundColor(DSColors.black)
-                    }
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
-                }
-                .listStyle(.plain)
-                .scrollContentBackground(.hidden)
-
-                DSButton(
-                    title: "Привезти сюда",
-                    style: .gradient,
-                    size: .medium,
-                    fillWidth: true
-                ) {
-                    dismiss()
-                }
-                .disabled(selectedAddressId == nil)
-                .opacity(selectedAddressId == nil ? 0.5 : 1)
-                .padding(.horizontal, DSSpacing.lg)
-                .padding(.bottom, DSSpacing.lg)
-            }
-
-            DSCloseButton(action: { dismiss() })
-                .padding(.top, DSSpacing.lg)
-                .padding(.trailing, DSSpacing.md)
-        }
-        .sheet(item: $formPayload) { payload in
-            AddressFormView(addressToEdit: payload.address, addressID: payload.addressID) { newAddress in
-                Task { _ = await userService.addAddress(newAddress) }
-            } onUpdate: { id, updatedAddress in
-                Task { _ = await userService.updateAddress(id: id, updatedAddress) }
-            }
-        }
-        .task {
-            await userService.getAddresses()
-            if selectedAddressId == nil {
-                selectedAddressId = userService.addresses.first?.id
-            }
-        }
-        .errorAlert(
-            message: userService.errorMessage,
-            onDismiss: {
-                userService.clearErrorMessage()
-            }
-        )
-    }
-
-    @ViewBuilder
-    private func addressRow(for item: IdentifiableAddress) -> some View {
-        let isSelected = item.id == selectedAddressId
-
-        HStack(alignment: .top) {
-            VStack(alignment: .leading, spacing: DSSpacing.sm) {
-                Text(item.address.addressLine)
-                    .font(.body)
-                let details = addressDetails(item.address)
-                if !details.isEmpty {
-                    Text(details)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-            }
-            Spacer()
-            Button {
-                formPayload = AddressFormPayload(id: item.id, address: item.address, addressID: item.id)
-            } label: {
-                Image("pencil")
-                    .foregroundColor(DSColors.secondary)
-            }
-            .buttonStyle(.plain)
-        }
-        .frame(height: 55)
-        .padding(.horizontal, DSSpacing.sm)
-        .background(isSelected ? DSColors.primary.opacity(0.1) : Color.clear)
-        .cornerRadius(DSRadius.md)
-        .contentShape(Rectangle())
-        .onTapGesture {
-            selectedAddressId = item.id
-        }
-        .listRowSeparator(.hidden)
-        .listRowBackground(Color.clear)
-        .listRowInsets(EdgeInsets(top: 0, leading: DSSpacing.md, bottom: DSSpacing.sm, trailing: DSSpacing.md))
-    }
-
-    private func addressDetails(_ address: Components.Schemas.Address) -> String {
-        var parts: [String] = []
-        if let floor = address.floor, !floor.isEmpty { parts.append("\(floor) этаж") }
-        if let entrance = address.entrance, !entrance.isEmpty { parts.append("\(entrance) подъезд") }
-        if let code = address.intercomCode, !code.isEmpty { parts.append("код домофона \(code)") }
-        return parts.joined(separator: ", ")
     }
 }

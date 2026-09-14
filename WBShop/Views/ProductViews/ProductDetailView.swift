@@ -1,5 +1,6 @@
 import SwiftUI
-import DSKit
+import DesignSystem
+import BusinessLogic
 import Core
 
 struct ProductDetailView: View {
@@ -68,7 +69,10 @@ struct ProductDetailView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 30, height: 30)
-                                    .foregroundStyle(productService.isFavorite(id: product.id) ? DSColors.favoriteActive : DSColors.favoriteInactive)
+                                    .foregroundStyle(
+                                        productService.isFavorite(id: product.id)
+                                            ? DSColors.favoriteActive : DSColors.favoriteInactive
+                                    )
                             }
                             .buttonStyle(.plain)
                         }

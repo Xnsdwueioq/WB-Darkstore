@@ -1,6 +1,8 @@
 #if DEBUG
 import Foundation
 import Core
+import DesignSystem
+import BusinessLogic
 
 @MainActor
 enum PreviewContainer {
@@ -16,21 +18,26 @@ enum PreviewContainer {
         ServiceLocator.shared.register(service: PreviewCategoryService() as CategoryServicing)
         ServiceLocator.shared.register(service: PreviewCartService(products: products.products) as CartServicing)
         ServiceLocator.shared.register(service: PreviewUserService() as UserServicing)
-        ServiceLocator.shared.register(service: SearchService() as SearchServicing)
+        ServiceLocator.shared.register(service: SearchService(productService: products) as SearchServicing)
         ServiceLocator.shared.register(service: AuthService() as AuthServicing)
     }
 }
 
 @Observable
+@MainActor
 private final class PreviewProductService: ProductServicing {
     var products: [ProductPreview] = [
-        ProductPreview(id: "apple", image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2026/02/21fd6d4c-f87e-4f3c-be5d-454192c8a577",
+        ProductPreview(id: "apple",
+            image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2026/02/21fd6d4c-f87e-4f3c-be5d-454192c8a577",
                        name: "Яблоки", weight: 500, price: 129, rating: 4.8, reviewCount: 24, isFavorite: true),
-        ProductPreview(id: "bread", image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2025/11/34314761-fd0f-48b4-a82b-8e45f5c48c88",
+        ProductPreview(id: "bread",
+            image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2025/11/34314761-fd0f-48b4-a82b-8e45f5c48c88",
                        name: "Хлеб пшеничный", weight: 400, price: 89, rating: 4.6, reviewCount: 12, isFavorite: false),
-        ProductPreview(id: "milk", image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2026/01/e1b14c69-0a4c-4ba5-9d0c-839dd4b6f34f",
+        ProductPreview(id: "milk",
+            image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2026/01/e1b14c69-0a4c-4ba5-9d0c-839dd4b6f34f",
                        name: "Молоко", weight: 950, price: 119, rating: 4.9, reviewCount: 31, isFavorite: false),
-        ProductPreview(id: "cheese", image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2026/07/28bd0c4d-1493-41dd-a0d7-4d0d1e30e015",
+        ProductPreview(id: "cheese",
+            image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2026/07/28bd0c4d-1493-41dd-a0d7-4d0d1e30e015",
                        name: "Сыр", weight: 200, price: 249, rating: 4.7, reviewCount: 18, isFavorite: true)
     ]
     var errorMessage: String?
@@ -52,8 +59,8 @@ private final class PreviewProductService: ProductServicing {
         guard let preview = products.first(where: { $0.id == id }) else { return nil }
         return Product(
             id: preview.id,
-            image: preview.image,
             name: preview.name,
+            image: preview.image,
             weight: preview.weight,
             price: preview.price,
             rating: preview.rating,
@@ -89,12 +96,23 @@ private final class PreviewProductService: ProductServicing {
 }
 
 @Observable
+@MainActor
 private final class PreviewCategoryService: CategoryServicing {
+    typealias Category = BusinessLogic.Category
     var errorMessage: String?
     var categories: [Category] = [
-        Category(id: "fruit", name: "Фрукты", image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2026/01/df092d3f-c58b-4764-97b2-7fc4d210672f"),
-        Category(id: "bakery", name: "Хлеб", image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2026/01/de553d07-d946-4734-a3b2-e34860a810e8"),
-        Category(id: "dairy", name: "Молочные продукты", image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2026/04/ee4c1860-4f5f-4684-8325-7f20336cc25e")
+        Category(
+            id: "fruit", name: "Фрукты",
+            image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2026/01/df092d3f-c58b-4764-97b2-7fc4d210672f"
+        ),
+        Category(
+            id: "bakery", name: "Хлеб",
+            image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2026/01/de553d07-d946-4734-a3b2-e34860a810e8"
+        ),
+        Category(
+            id: "dairy", name: "Молочные продукты",
+            image: "https://damcdn.samokat.ru/dam-storage-ext-env-prod/2026/04/ee4c1860-4f5f-4684-8325-7f20336cc25e"
+        )
     ]
 
     func fetchCategories() async {}
@@ -102,6 +120,7 @@ private final class PreviewCategoryService: CategoryServicing {
 }
 
 @Observable
+@MainActor
 private final class PreviewCartService: CartServicing {
     var productsInCart: [CartProduct] = []
     var errorMessage: String?
@@ -164,8 +183,8 @@ private final class PreviewUserService: UserServicing {
 
     func currentUserName() async -> String { "Гость" }
     func getAddresses() async {}
-    func addAddress(_ address: Components.Schemas.Address) async -> Bool { false }
-    func updateAddress(id: String, _ address: Components.Schemas.Address) async -> Bool { false }
+    func addAddress(_ address: Address) async -> Bool { false }
+    func updateAddress(id: String, _ address: Address) async -> Bool { false }
     func deleteAddress(id: String) async {}
     func clearErrorMessage() { errorMessage = nil }
     func getOrders() async {}
