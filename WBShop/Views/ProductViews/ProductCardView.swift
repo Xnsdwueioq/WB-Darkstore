@@ -26,9 +26,18 @@ struct ProductCardView: View {
                     CachedAsyncImage(url: imageUrl) { phase in
                         switch phase {
                         case .empty:
-                            ProgressView()
+                            Image(systemName: "photo")
+                                .resizable()
+                                .scaledToFill()
                                 .frame(width: width, height: imageHeight)
-                                .background(DSColors.secondary)
+                                .foregroundStyle(Color(.systemGray5))
+                                .redacted(reason: .placeholder)
+                                .background(Color(.systemGray6))
+                                .phaseAnimator([false, true]) { placeholder, faded in
+                                    placeholder.opacity(faded ? 0.65 : 1)
+                                } animation: { _ in
+                                    .easeInOut(duration: 1)
+                                }
 
                         case .success(let image):
                             image

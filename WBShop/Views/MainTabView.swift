@@ -65,3 +65,10 @@ struct MainTabView: View {
         }
     }
 }
+
+#if DEBUG
+#Preview("Главные вкладки") {
+    PreviewContainer.install()
+    return AppRootView()
+}
+#endif
