@@ -7,10 +7,10 @@ public enum FontRegister {
             print("Ошибка: Файл шрифта Inter не найден в Bundle.module")
             return
         }
-        
+
         var error: Unmanaged<CFError>?
         CTFontManagerRegisterFontsForURL(url as CFURL, .process, &error)
-        
+
         if let error = error?.takeRetainedValue() {
             print("Ошибка регистрации шрифта: \(error)")
         }

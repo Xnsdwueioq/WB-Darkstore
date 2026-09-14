@@ -3,7 +3,7 @@ import Core
 import DSKit
 
 struct RatingStarsView: View {
-    let rating: Double 
+    let rating: Double
     let maxRating: Int = 5
     var starSize: Font = .body
 
@@ -19,7 +19,7 @@ struct RatingStarsView: View {
 
     private func starImage(for index: Int) -> Image {
         let difference = rating - Double(index - 1)
-        
+
         if difference >= 1 {
             return Image(systemName: "star.fill")
         } else if difference >= 0.5 {
@@ -44,20 +44,6 @@ struct ReviewsView: View {
     let onDismiss: () -> Void
     @State private var showAddReview = false
     @State private var selectedSortOption: ReviewSortOption = .newest
-    private var averageRating: Double {
-        let count = product.reviews?.count ?? 0
-
-        guard count > 0 else {
-            return 0
-        }
-
-        let totalRating = product.reviews?
-            .compactMap(\.rating)
-            .reduce(0, +) ?? 0
-
-        return Double(totalRating) / Double(count)
-    }
-
     private var sortedReviews: [Review] {
             guard let reviews = product.reviews else { return [] }
 
@@ -81,28 +67,14 @@ struct ReviewsView: View {
     var body: some View {
         ZStack(alignment: .topLeading) {
             let count = self.product.reviews?.count ?? 0
-            
+
             VStack(spacing: 16) {
-                HStack {
-                    Text("Отзывы")
-                        .font(DSTypography.headline)
-                        .frame(alignment: .leading)
-                    Text("\(count)")
-                        .font(DSTypography.headline)
-                        .foregroundStyle(DSColors.secondary.opacity(0.8))
-                    Spacer()
-                }
+                DSReviewsRatingSummary(ratings: product.reviews?.map(\.rating) ?? [])
                 .padding(.horizontal, DSSpacing.lg)
                 .padding(.top, DSSpacing.lg)
 
                 ScrollView {
                     VStack(spacing: DSSpacing.md) {
-                        HStack {
-                            Text(String(format: "%.1f", averageRating))
-                                .font(DSTypography.reviewAvgRating)
-                            Spacer()
-                        }
-                        
                         DSButton(title: "Написать отзыв", style: .lightPurple, fillWidth: true) {
                             showAddReview = true
                         }
@@ -190,7 +162,7 @@ struct ReviewView: View {
         }
         .padding(DSSpacing.lg)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(DSColors.secondary.opacity(0.1))
+        .background(DSColors.smoky)
         .cornerRadius(16)
     }
 }
@@ -201,8 +173,7 @@ struct AddReviewView: View {
     let product: Product
     let onReviewAdded: (Product) -> Void
     let onDismiss: () -> Void
-    
-    
+
     @State private var rating: Int = 0
     @State private var comment: String = ""
     @State private var images: [String] = []
@@ -216,7 +187,7 @@ struct AddReviewView: View {
                     .font(DSTypography.title)
                     .foregroundStyle(DSColors.black)
                     .padding(.top, DSSpacing.lg)
-                
+
                 HStack(spacing: DSSpacing.md) {
                     CachedAsyncImage(url: URL(string: product.image)) { phase in
                         switch phase {
@@ -237,13 +208,13 @@ struct AddReviewView: View {
                     .clipped()
                     .cornerRadius(8)
                     .background(Color(.systemGray6))
-                    
-                    VStack (alignment: .leading) {
+
+                    VStack(alignment: .leading) {
                         HStack {
                             Text(product.name)
                                 .font(DSTypography.body)
                                 .foregroundStyle(DSColors.black)
-                            
+
                             Text("\(product.weight, specifier: "%.f")г")
                                 .font(DSTypography.body)
                                 .foregroundStyle(DSColors.secondary)
@@ -252,15 +223,14 @@ struct AddReviewView: View {
                             .font(DSTypography.body)
                             .foregroundStyle(DSColors.black)
                     }
-                    
-                    
+
                 }
-                
+
                 VStack(alignment: .leading, spacing: DSSpacing.xs) {
                     Text("Оценка")
                         .font(DSTypography.body)
                         .foregroundStyle(DSColors.black)
-                    
+
                     HStack(spacing: DSSpacing.xs) {
                         ForEach(1...5, id: \.self) { star in
                             Image(systemName: star <= rating ? "star.fill" : "star")
@@ -272,12 +242,12 @@ struct AddReviewView: View {
                         }
                     }
                 }
-                
+
                 VStack(alignment: .leading, spacing: DSSpacing.xs) {
                     Text("Комментарий")
                         .font(DSTypography.body)
                         .foregroundStyle(DSColors.black)
-                    
+
                     TextEditor(text: $comment)
                         .frame(minHeight: 12)
                         .padding(DSSpacing.sm)
@@ -285,7 +255,7 @@ struct AddReviewView: View {
                         .cornerRadius(12)
                 }
                 Spacer()
-                
+
                 DSButton(
                     title: isSubmitting ? "Отправка..." : "Оставить отзыв",
                     style: .gradient,
@@ -296,7 +266,7 @@ struct AddReviewView: View {
                 }
             }
             .padding(.horizontal, DSSpacing.lg)
-            
+
             HStack {
                 Spacer()
                 DSCloseButton(action: onDismiss)
@@ -326,7 +296,7 @@ struct AddReviewView: View {
             }
         )
     }
-    
+
     private func submitReview() async {
         isSubmitting = true
         defer { isSubmitting = false }

@@ -40,7 +40,7 @@ struct CartView: View {
                         .foregroundStyle(DSColors.secondary)
                     Spacer()
                 }
-                .padding(.top, DSSpacing.sm_md)
+                .padding(.top, DSSpacing.smMd)
                 .padding(.horizontal, DSSpacing.md)
 
                 if cart.productsInCart.isEmpty {
@@ -51,111 +51,120 @@ struct CartView: View {
                     )
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
-                    List {
-                        ForEach(cart.productsInCart) { product in
-                            CartItemView(
-                                product: product,
-                                onIncrement: {
-                                    Task { await cart.addProductToCart(id: product.id) }
-                                },
-                                onDecrement: {
-                                    Task { await cart.removeProductFromCart(id: product.id) }
-                                }
-                            )
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                Button(role: .destructive) {
-                                    Task {
-                                        await cart.deleteProductFromCart(id: product.id)
-                                    }
-                                } label: {
-                                    Label("Удалить", systemImage: "trash")
-                                }
-                            }
-                            .listRowSeparator(.hidden)
-                            .listRowBackground(Color.clear)
-                            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: DSSpacing.lg, trailing: 0))
-                        }
-
-                        VStack(spacing: DSSpacing.xl) {
-                            AddressSelectorView()
-
-                            HStack {
-                                Text("Оплата картой")
-                                    .font(DSTypography.priceBold)
-                                Image(systemName: "chevron.right")
-                                    .font(DSTypography.bodyBold)
-                                    .foregroundColor(DSColors.black)
-                                Spacer()
-                            }
-
-                            HStack {
-                                Text("Итого")
-                                    .font(DSTypography.priceBold)
-                                Spacer()
-                                DSPriceText(Double(cart.totalPrice), font: DSTypography.priceBold)
-                            }
-
-                            VStack {
-                                HStack {
-                                    Text("\(totalProductsCount) товар\(pluralSuffix(totalProductsCount))")
-                                        .font(DSTypography.caption)
-                                    Spacer()
-                                    DSPriceText(Double(cart.totalPrice), font: DSTypography.caption)
-                                }
-
-                                HStack {
-                                    Text("Доставка")
-                                        .font(DSTypography.caption)
-                                    Spacer()
-                                    Text("Бесплатно")
-                                        .font(DSTypography.caption)
-                                }
-                            }
-                        }
-                        .padding(.horizontal, DSSpacing.md)
-                        .padding(.top, DSSpacing.md)
-                        .padding(.bottom, DSSpacing.xxl)
-                        .background(LinearGradient.figmaSubtlePinkPurple)
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-
-                        DSButton(
-                            title: "Заказать",
-                            style: .gradient,
-                            size: .medium,
-                            fillWidth: true
-                        ) {
-                            Task {
-                                // если с другого устройства сделали заказ, пока открыта cart view
-                                await userService.getOrders()
-
-                                if !hasActiveOrder {
-                                    await placeOrder()
-                                }
-
-                                // апдейт после заказа
-                                await userService.getOrders()
-                            }
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(isButtonDisabled)
-                        .opacity(isButtonDisabled ? 0.5 : 1)
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
-                        if hasActiveOrder {
-                            DSInfoBanner(
-                                title: "Ваш заказ уже в работе",
-                                message: "Новый заказ можно будет оформить, когда текущий завершится."
-                            )
+                    VStack(alignment: .leading, spacing: DSSpacing.sm) {
+                        Text("15 минут · \(totalProductsCount) товар\(pluralSuffix(totalProductsCount))")
+                            .font(DSTypography.button)
                             .padding(.horizontal, DSSpacing.md)
-                            .listRowInsets(EdgeInsets(top: DSSpacing.md, leading: 0, bottom: DSSpacing.lg, trailing: 0))
+                            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: DSSpacing.md, trailing: 0))
                             .listRowSeparator(.hidden)
                             .listRowBackground(Color.clear)
+
+                        List {
+                            ForEach(cart.productsInCart) { product in
+                                CartItemView(
+                                    product: product,
+                                    onIncrement: {
+                                        Task { await cart.addProductToCart(id: product.id) }
+                                    },
+                                    onDecrement: {
+                                        Task { await cart.removeProductFromCart(id: product.id) }
+                                    }
+                                )
+                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                    Button(role: .destructive) {
+                                        Task {
+                                            await cart.deleteProductFromCart(id: product.id)
+                                        }
+                                    } label: {
+                                        Label("Удалить", systemImage: "trash")
+                                    }
+                                }
+                                .listRowSeparator(.hidden)
+                                .listRowBackground(Color.clear)
+                                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: DSSpacing.lg, trailing: 0))
+                            }
+
+                            VStack(spacing: DSSpacing.xl) {
+                                AddressSelectorView()
+
+                                HStack {
+                                    Text("Оплата картой")
+                                        .font(DSTypography.priceBold)
+                                    Image(systemName: "chevron.right")
+                                        .font(DSTypography.bodyBold)
+                                        .foregroundColor(DSColors.black)
+                                    Spacer()
+                                }
+
+                                HStack {
+                                    Text("Итого")
+                                        .font(DSTypography.priceBold)
+                                    Spacer()
+                                    DSPriceText(Double(cart.totalPrice), font: DSTypography.priceBold)
+                                }
+
+                                VStack {
+                                    HStack {
+                                        Text("\(totalProductsCount) товар\(pluralSuffix(totalProductsCount))")
+                                            .font(DSTypography.caption)
+                                        Spacer()
+                                        DSPriceText(Double(cart.totalPrice), font: DSTypography.caption)
+                                    }
+
+                                    HStack {
+                                        Text("Доставка")
+                                            .font(DSTypography.caption)
+                                        Spacer()
+                                        Text("Бесплатно")
+                                            .font(DSTypography.caption)
+                                    }
+                                }
+                            }
+                            .padding(.horizontal, DSSpacing.md)
+                            .padding(.top, DSSpacing.md)
+                            .padding(.bottom, DSSpacing.xxl)
+                            .background(LinearGradient.figmaSubtlePinkPurple)
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+
+                            DSButton(
+                                title: "Заказать",
+                                style: .gradient,
+                                size: .medium,
+                                fillWidth: true
+                            ) {
+                                Task {
+                                    // если с другого устройства сделали заказ, пока открыта cart view
+                                    await userService.getOrders()
+
+                                    if !hasActiveOrder {
+                                        await placeOrder()
+                                    }
+
+                                    // апдейт после заказа
+                                    await userService.getOrders()
+                                }
+                            }
+                            .buttonStyle(.plain)
+                            .disabled(isButtonDisabled)
+                            .opacity(isButtonDisabled ? 0.5 : 1)
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                            if hasActiveOrder {
+                                DSInfoBanner(
+                                    title: "Ваш заказ уже в работе",
+                                    message: "Новый заказ можно будет оформить, когда текущий завершится."
+                                )
+                                .padding(.horizontal, DSSpacing.md)
+                                .listRowInsets(EdgeInsets(top: DSSpacing.md, leading: 0, bottom: DSSpacing.lg, trailing: 0))
+                                .listRowSeparator(.hidden)
+                                .listRowBackground(Color.clear)
+                            }
                         }
+                        .listStyle(.plain)
+                        .scrollContentBackground(.hidden)
                     }
-                    .listStyle(.plain)
-                    .scrollContentBackground(.hidden)
                 }
             }
         }
@@ -214,7 +223,7 @@ struct CartView: View {
 }
 
 #Preview {
-    CartView() {
+    CartView {
         print()
     }
 }
@@ -237,8 +246,7 @@ struct CartItemView: View {
 
                         case .success(let image):
                             image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
+                                .resizable().scaledToFill()
                                 .frame(width: 100, height: 100)
                                 .clipped()
 
@@ -270,7 +278,7 @@ struct CartItemView: View {
 
             VStack(alignment: .leading, spacing: DSSpacing.xs) {
                 if product.isAvailable {
-                    DSPriceText(Double(product.quantity) * Double(product.price), font: DSTypography.body)
+                    DSPriceText(Double(product.quantity) * Double(product.price), font: DSTypography.priceBold)
                 } else {
                     Text("Нет в наличии")
                         .font(DSTypography.caption)

@@ -54,7 +54,7 @@ final class CategoryService: CategoryServicing {
             self.errorMessage = "Ошибка сети: \(error.localizedDescription)"
         }
     }
-    
+
     public func clearErrorMessage() {
         if errorMessage != nil {
             errorMessage = nil

@@ -6,7 +6,7 @@ struct ProductCardView: View {
     let product: ProductPreview
     var width: CGFloat = 174
     @Injected var cart: CartServicing
-    
+
     private var imageHeight: CGFloat {
         width * (256.0 / /*174*/ 256.0)
     }
@@ -26,9 +26,18 @@ struct ProductCardView: View {
                     CachedAsyncImage(url: imageUrl) { phase in
                         switch phase {
                         case .empty:
-                            ProgressView()
+                            Image(systemName: "photo")
+                                .resizable()
+                                .scaledToFill()
                                 .frame(width: width, height: imageHeight)
-                                .background(DSColors.secondary)
+                                .foregroundStyle(Color(.systemGray5))
+                                .redacted(reason: .placeholder)
+                                .background(Color(.systemGray6))
+                                .phaseAnimator([false, true]) { placeholder, faded in
+                                    placeholder.opacity(faded ? 0.65 : 1)
+                                } animation: { _ in
+                                    .easeInOut(duration: 1)
+                                }
 
                         case .success(let image):
                             image
@@ -72,20 +81,19 @@ struct ProductCardView: View {
             }
             .animation(.spring(response: 0.3, dampingFraction: 0.75), value: quantity)
 
-
             HStack {
                 Text(product.name)
                     .font(DSTypography.caption)
                     .lineLimit(2)
                     .frame(height: 37, alignment: .topLeading)
-                
+
                 Text("\(product.weight, specifier: "%.0f") г")
                     .font(DSTypography.caption)
                     .foregroundColor(DSColors.secondary)
                     .frame(height: 37, alignment: .topLeading)
-                
+
             }
-            
+
             HStack {
                 if quantity > 0 {
                     HStack(spacing: DSSpacing.sm) {
@@ -100,13 +108,11 @@ struct ProductCardView: View {
                                 .contentShape(Rectangle())
                         }
 
-
                         Text("\(totalPrice) ₽")
                             .font(DSTypography.caption)
                             .bold()
                             .foregroundColor(.white)
                             .lineLimit(1)
-
 
                         Button {
                             Task {

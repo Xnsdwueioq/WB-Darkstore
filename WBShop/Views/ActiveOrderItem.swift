@@ -16,15 +16,15 @@ struct ActiveOrderCard: View {
                         (Text("Доставим через ") + Text("N минут"))
                             .font(DSTypography.order.weight(.regular))
                             .foregroundColor(DSColors.black)
-                        
+
                         Text(order.address.addressLine)
                             .font(DSTypography.caption)
                             .foregroundColor(DSColors.secondary)
                             .lineLimit(1)
                     }
-                    
+
                     Spacer()
-                    
+
                     Image(systemName: "chevron.right")
                         .font(DSTypography.caption)
                         .foregroundColor(DSColors.secondary)
@@ -72,7 +72,7 @@ struct ActiveOrderCard: View {
                 Text(item.name)
                     .lineLimit(1)
                     .foregroundColor(DSColors.black)
-                
+
                 Text("\(item.weight) г")
                     .foregroundColor(DSColors.secondary)
             }

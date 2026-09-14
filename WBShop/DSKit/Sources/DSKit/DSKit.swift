@@ -43,7 +43,7 @@ extension LinearGradient {
         startPoint: UnitPoint(x: 0.004, y: 0.437),
         endPoint: UnitPoint(x: 0.996, y: 0.563)
     )
-    
+
     public static let figmaSubtlePinkPurple = LinearGradient(
         gradient: Gradient(stops: [
             .init(color: Color(hex: "FEF1FB"), location: 0.0049),
@@ -95,7 +95,7 @@ public enum DSButtonStyle {
             return .white
         }
     }
-    
+
     var outline: Color {
         switch self {
         case .white:
@@ -214,7 +214,7 @@ public struct DSButton: View {
 
 public struct DSCloseButton: View {
     let action: () -> Void
-    
+
     public init(action: @escaping () -> Void) {
         self.action = action
     }
@@ -341,6 +341,8 @@ public enum DSColors {
     public static let white = Color.white
     public static let lightPurple = Color.purple.opacity(0.1)
     public static let smoky = Color(hex: "F6F6FA")
+    public static let reviewRatingTrack = Color(hex: "F0ECF4")
+    public static let reviewRatingMuted = Color(hex: "9797AF")
     public static let favoriteActive = Color(hex: "E313BF")
     public static let favoriteInactive = Color(hex: "B9B9B8")
 }
@@ -348,12 +350,12 @@ public enum DSColors {
 public enum DSSpacing {
     public static let xs: CGFloat = 4
     public static let sm: CGFloat = 8
-    public static let sm_md: CGFloat = 10
+    public static let smMd: CGFloat = 10
     public static let md: CGFloat = 12
     public static let lg: CGFloat = 16
     public static let xl: CGFloat = 20
     public static let xxl: CGFloat = 24
-    public static let cartTitleSpacingList: CGFloat = 49
+    public static let cartTitleSpacingList: CGFloat = 20
 
 }
 
@@ -366,7 +368,7 @@ public enum DSRadius {
 }
 
 public enum DSTypography {
-    public static let display = Font.custom("Inter", size: 32)
+    public static let display = Font.custom("Inter", size: 32).weight(.medium)
     public static let success = Font.custom("Inter", size: 56).weight(.semibold)
     public static let title = Font.custom("Inter", size: 26).weight(.semibold)
     public static let headline = Font.custom("Inter", size: 24).weight(.bold)
@@ -389,7 +391,7 @@ public struct DSCounterView: View {
         self.onIncrement = onIncrement
         self.onDecrement = onDecrement
     }
-    
+
     public var body: some View {
         HStack(spacing: DSSpacing.lg) {
             Button(action: onDecrement) {

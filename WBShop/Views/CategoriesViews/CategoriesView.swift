@@ -19,11 +19,10 @@ struct CategoriesView: View {
                 Text("Каталог")
                     .font(DSTypography.display)
                     .padding(.horizontal, DSSpacing.md)
-                    .padding(.top, DSSpacing.sm_md)
+                    .padding(.top, DSSpacing.smMd)
 
                 if categoryService.categories.isEmpty {
-                    ProgressView()
-                        .frame(maxWidth: .infinity)
+                    CategoriesEmptyView()
                         .padding(.top, 60)
                 } else {
                     LazyVGrid(columns: columns, spacing: DSSpacing.sm) {
@@ -90,5 +89,11 @@ struct CategoryCardView: View {
                 .lineLimit(2)
                 .frame(maxWidth: .infinity, minHeight: 32, alignment: .topLeading)
         }
+    }
+}
+
+struct CategoriesEmptyView: View {
+    var body: some View {
+        ContentUnavailableView("Не удалось загрузить категории", systemImage: "wifi.slash")
     }
 }

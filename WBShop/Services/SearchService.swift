@@ -16,7 +16,7 @@ final class SearchService: SearchServicing {
     func search(query: String) -> [ProductPreview] {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return [] }
-        
+
         return productService.products.filter {
             $0.name.localizedCaseInsensitiveContains(trimmed)
         }

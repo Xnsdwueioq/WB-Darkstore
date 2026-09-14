@@ -19,7 +19,7 @@ struct MainTabView: View {
                 value: MainTab.catalog) {
                 ContentView()
             }
-            
+
             Tab("Категории",
                 systemImage: "list.bullet",
                 value: MainTab.categories) {
@@ -65,3 +65,10 @@ struct MainTabView: View {
         }
     }
 }
+
+#if DEBUG
+#Preview("Главные вкладки") {
+    PreviewContainer.install()
+    return AppRootView()
+}
+#endif
