@@ -1,26 +1,20 @@
 import SwiftUI
-#if canImport(UIKit)
 import UIKit
-public typealias PlatformImage = UIImage
-#elseif canImport(AppKit)
-import AppKit
-public typealias PlatformImage = NSImage
-#endif
 
 public actor ImageCache {
     public static let shared = ImageCache()
 
-    private let memoryCache: NSCache<NSString, PlatformImage> = {
-        let cache = NSCache<NSString, PlatformImage>()
+    private let memoryCache: NSCache<NSString, UIImage> = {
+        let cache = NSCache<NSString, UIImage>()
         cache.countLimit = 200
         return cache
     }()
 
-    private var inFlightTasks: [URL: Task<PlatformImage?, Never>] = [:]
+    private var inFlightTasks: [URL: Task<UIImage?, Never>] = [:]
 
     private init() {}
 
-    public func image(for url: URL) async -> PlatformImage? {
+    public func image(for url: URL) async -> UIImage? {
         let key = url.absoluteString as NSString
 
         if let cached = memoryCache.object(forKey: key) {
@@ -31,18 +25,14 @@ public actor ImageCache {
             return await existingTask.value
         }
 
-        let task = Task<PlatformImage?, Never> {
+        let task = Task<UIImage?, Never> {
             do {
                 let (data, response) = try await URLSession.shared.data(from: url)
                 guard let httpResponse = response as? HTTPURLResponse,
                       200..<300 ~= httpResponse.statusCode else {
                     return nil
                 }
-                #if canImport(UIKit)
                 guard let image = UIImage(data: data) else { return nil }
-                #elseif canImport(AppKit)
-                guard let image = NSImage(data: data) else { return nil }
-                #endif
                 return image
             } catch {
                 return nil
@@ -86,12 +76,8 @@ public struct CachedAsyncImage<Content: View>: View {
                     return
                 }
                 phase = .empty
-                if let platformImage = await ImageCache.shared.image(for: url) {
-                    #if canImport(UIKit)
-                    phase = .success(Image(uiImage: platformImage))
-                    #elseif canImport(AppKit)
-                    phase = .success(Image(nsImage: platformImage))
-                    #endif
+                if let image = await ImageCache.shared.image(for: url) {
+                    phase = .success(Image(uiImage: image))
                 } else {
                     phase = .failure
                 }

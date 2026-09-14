@@ -119,7 +119,6 @@ public final class ProductService: ProductServicing {
         } else {
             favoriteIds.remove(id)
         }
-        favProducts = products.filter { favoriteIds.contains($0.id) }
     }
 
     @discardableResult

@@ -77,6 +77,54 @@ final class BusinessLogicTests: XCTestCase {
         XCTAssertNotNil(productService.errorMessage)
     }
 
+    func testFavoriteRemainsInListUntilRefresh() async {
+        let mockCatalog = MockCatalogAPI()
+        let favorite = ProductPreviewDTO(
+            id: "item1",
+            name: "Test",
+            image: "",
+            weight: 1,
+            price: 100,
+            rating: 5,
+            reviewCount: 0,
+            isFavorite: true
+        )
+        mockCatalog.productsResult = .success(ProductPageDTO(currentPage: 1, totalPages: 1, data: [favorite]))
+        let productService = ProductService(catalogAPI: mockCatalog)
+
+        await productService.fetchProducts()
+        await productService.toggleFavorite(id: favorite.id)
+
+        XCTAssertFalse(productService.isFavorite(id: favorite.id))
+        XCTAssertEqual(productService.favProducts.map(\.id), [favorite.id])
+        XCTAssertEqual(mockCatalog.setFavoriteCalls.count, 1)
+        XCTAssertFalse(mockCatalog.setFavoriteCalls[0].isFavorite)
+
+        await productService.toggleFavorite(id: favorite.id)
+        XCTAssertTrue(productService.isFavorite(id: favorite.id))
+        XCTAssertEqual(productService.favProducts.map(\.id), [favorite.id])
+        XCTAssertTrue(mockCatalog.setFavoriteCalls[1].isFavorite)
+
+        await productService.toggleFavorite(id: favorite.id)
+        XCTAssertFalse(productService.isFavorite(id: favorite.id))
+
+        mockCatalog.productsResult = .success(ProductPageDTO(currentPage: 1, totalPages: 1, data: [
+            ProductPreviewDTO(
+                id: favorite.id,
+                name: favorite.name,
+                image: favorite.image,
+                weight: favorite.weight,
+                price: favorite.price,
+                rating: favorite.rating,
+                reviewCount: favorite.reviewCount,
+                isFavorite: false
+            )
+        ]))
+
+        await productService.fetchFavProducts()
+        XCTAssertTrue(productService.favProducts.isEmpty)
+    }
+
     func testModelMappers() {
         let catDTO = CategoryDTO(id: "10", name: "Фрукты", image: "http://example.com/fruits.png")
         let cat = CatalogMapper.mapCategory(catDTO)

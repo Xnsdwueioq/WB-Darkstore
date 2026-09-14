@@ -63,11 +63,7 @@ public extension LinearGradient {
 public enum DSColors {
     public static let primary = Color.purple
     public static let secondary = Color.gray
-    #if canImport(UIKit)
-    public static let background = Color(uiColor: .systemBackground)
-    #else
-    public static let background = Color(nsColor: .windowBackgroundColor)
-    #endif
+    public static let background = Color(.systemBackground)
     public static let surface = Color.white
     public static let border = Color.gray.opacity(0.1)
     public static let destructive = Color.red

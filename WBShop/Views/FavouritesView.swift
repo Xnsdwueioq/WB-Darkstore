@@ -5,6 +5,7 @@ import BusinessLogic
 
 struct FavoritesView: View {
     @Injected var productService: ProductServicing
+    @Injected private var router: Router
     @State private var selectedProduct: ProductPreview?
 
     var body: some View {
@@ -26,7 +27,8 @@ struct FavoritesView: View {
         )
         .navigationTitle("Избранное")
         .background(DSColors.surface)
-        .task {
+        .task(id: router.selectedTab) {
+            guard router.selectedTab == .favorites else { return }
             await productService.fetchFavProducts()
         }
         .sheet(item: $selectedProduct) { preview in

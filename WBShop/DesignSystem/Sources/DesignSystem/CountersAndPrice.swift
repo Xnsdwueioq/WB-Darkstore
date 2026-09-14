@@ -37,11 +37,7 @@ public struct DSCounterView: View {
         }
         .padding(.horizontal, DSSpacing.md)
         .padding(.vertical, DSSpacing.sm)
-        #if canImport(UIKit)
-        .background(Color(uiColor: .systemGroupedBackground))
-        #else
-        .background(Color(nsColor: .windowBackgroundColor))
-        #endif
+        .background(Color(.systemGroupedBackground))
         .cornerRadius(DSRadius.md)
     }
 }
