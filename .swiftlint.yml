@@ -4,12 +4,14 @@ disabled_rules:
 excluded:
   - .build
   - DerivedData
-  - Packages/BusinessLogic/.build
-  - Packages/BusinessLogic/.swiftpm
-  - Packages/DesignSystem/.build
-  - Packages/DesignSystem/.swiftpm
-  - Packages/NetworkPackage/.build
-  - Packages/NetworkPackage/.swiftpm
-  - Docs
+  - WBShop/Core/.build
+  - WBShop/Core/.swiftpm
+  - WBShop/DSKit/.build
+  - WBShop/DSKit/.swiftpm
+
+identifier_name:
+  min_length:
+    warning: 1
+    error: 1
 
 lenient: false

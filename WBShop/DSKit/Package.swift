@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
     name: "DSKit",
     platforms: [
-        .iOS(.v16),
+        .iOS(.v18),
+        .macOS(.v13),
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -15,6 +16,12 @@ let package = Package(
             targets: ["DSKit"]
         ),
     ],
+    dependencies: [
+        .package(
+            url: "https://github.com/realm/SwiftLint",
+            from: "0.65.1"
+        )
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
@@ -22,6 +29,12 @@ let package = Package(
             name: "DSKit",
             resources: [
                 .process("Resources")
+            ],
+            plugins: [
+                .plugin(
+                    name: "SwiftLintBuildToolPlugin",
+                    package: "SwiftLint"
+                )
             ]
         ),
 
